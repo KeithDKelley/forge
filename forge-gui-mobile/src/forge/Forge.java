@@ -82,6 +82,7 @@ public class Forge implements ApplicationListener {
     public boolean needsUpdate = false;
     public static boolean switchClassic = false;
     public static boolean advStartup = false;
+    public static String commandLineSelector = null;
     public static boolean safeToClose = true;
     public static boolean magnify = false;
     public static boolean magnifyToggle = true;
@@ -202,6 +203,8 @@ public class Forge implements ApplicationListener {
         destroyThis = true; //Prevent back()
         if (Files.exists(Paths.get(ForgeConstants.DEFAULT_SKINS_DIR+ForgeConstants.ADV_TEXTURE_BG_FILE)))
             selector = getForgePreferences().getPref(FPref.UI_SELECTOR_MODE);
+        if (commandLineSelector != null)
+            selector = commandLineSelector;
 
         //screenWidth and screenHeight should be set initially and only change upon restarting the app
         screenWidth = Gdx.app.getGraphics().getWidth();

@@ -66,6 +66,8 @@ public class GameLauncher {
             else if(arg.startsWith("height=")) heightArg = Integer.parseInt(arg.substring(7));
             else if(arg.equalsIgnoreCase("portrait")) portraitArg = true;
             else if(arg.equalsIgnoreCase("landscape")) landscapeArg = true;
+            else if(arg.equalsIgnoreCase("adventure")) Forge.commandLineSelector = "Adventure";
+            else if(arg.equalsIgnoreCase("classic")) Forge.commandLineSelector = "Classic";
         }
 
         boolean hasBothDims = widthArg != null && heightArg != null;
