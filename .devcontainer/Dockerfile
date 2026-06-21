@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-dejavu \
     fonts-liberation \
     fontconfig \
+    # Tiled map editor
+    tiled \
     # Utilities
     procps \
     curl \
