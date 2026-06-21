@@ -95,7 +95,5 @@ forge-gui/tools/PerSetTrackingResults
 __pycache__
 *.pyc
 
-# Ignore Claude configuration
-.claude
 # EDHREC commander matrix tool intermediates
 forge-gui/tools/build

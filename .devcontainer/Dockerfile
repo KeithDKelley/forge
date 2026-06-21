@@ -61,4 +61,9 @@ RUN mkdir -p /home/forge/.claude \
 
 WORKDIR /workspace
 
+COPY --chown=forge:forge .devcontainer/start-vnc.sh /usr/local/bin/start-vnc.sh
+RUN chmod +x /usr/local/bin/start-vnc.sh
+
 EXPOSE 5901 6080
+
+CMD ["/usr/local/bin/start-vnc.sh"]
