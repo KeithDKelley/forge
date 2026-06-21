@@ -1,0 +1,32 @@
+[
+	{
+		"name": "Test",
+		"displayName": "Fanciest Beach",
+		"type": "dungeon",
+		"count": 30,
+		"spriteAtlas": "../common/maps/tileset/buildings.atlas",
+		"sprite": "Aerie",
+		"map": "../Vryndal/maps/map/beach/test.tmx",
+		"radiusFactor": 0.8,
+		"questTags": [
+			"Hostile",
+			"Nest",
+			"Dungeon",
+			"Sidequest"
+		]
+	},
+	{
+		"name": "Spawn",
+		"displayName": "Secluded Encampment",
+		"type": "town",
+		"count": 1,
+		"spriteAtlas": "../common/maps/tileset/buildings.atlas",
+		"sprite": "Spawn",
+		"map": "../common/maps/map/main_story/spawn.tmx",
+		"questTags": [
+			"Story",
+			"Spawn",
+			"BiomeColorless"
+		]
+	}
+]
