@@ -109,6 +109,7 @@
     "CMM"
   ],
   "usePriceListPrices": true,
+  "enableRewardQueries": true,
   "difficulties": [{
       "name": "Normal",
       "startingLife": 10,

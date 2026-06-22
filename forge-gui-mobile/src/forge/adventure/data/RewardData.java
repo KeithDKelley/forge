@@ -51,6 +51,7 @@ public class RewardData implements Serializable {
     public String[] keyWords;
     public String colorType;
     public String cardText;
+    public String query;
     public boolean matchAllSubTypes;
     public boolean matchAllColors;
     public RewardData[] cardUnion;
@@ -85,6 +86,7 @@ public class RewardData implements Serializable {
         keyWords         = rewardData.keyWords == null ? null : rewardData.keyWords.clone();
         colorType        = rewardData.colorType;
         cardText         = rewardData.cardText;
+        query            = rewardData.query;
         matchAllSubTypes = rewardData.matchAllSubTypes;
         matchAllColors   = rewardData.matchAllColors;
         cardUnion        = rewardData.cardUnion == null ? null : rewardData.cardUnion.clone();
@@ -151,6 +153,12 @@ public class RewardData implements Serializable {
         allCards = null;
     }
 
+    private static boolean hasEnabledQuery(RewardData data) {
+        return Config.instance().getConfigData().enableRewardQueries
+                && data.query != null
+                && !data.query.trim().isEmpty();
+    }
+
     public Array<Reward> generate(boolean isForEnemy, boolean useSeedlessRandom) {
         return generate(isForEnemy, null, useSeedlessRandom);
     }
@@ -192,7 +200,7 @@ public class RewardData implements Serializable {
                             } else {
                                 pc = StaticData.instance().getCommonCards().getCard(r.cardName);
                             }
-                            if (pc != null)
+                            if (pc != null && (!hasEnabledQuery(r) || new CardUtil.CardPredicate(r, true).test(pc)))
                                 pool.add(pc);
                         } else if (r.sourceDeck != null && !r.sourceDeck.isEmpty() ) {
                             pool.addAll(CardUtil.getDeck(r.sourceDeck, false, false, "", false, false).getAllCardsInASinglePool().toFlatList());
@@ -227,7 +235,7 @@ public class RewardData implements Serializable {
                             PaperCard card = (request.edition != null)
                                 ? CardUtil.getCardByNameAndEdition(request.cardName, request.edition)
                                 : CardUtil.getCardByName(request.cardName);
-                            if (card != null) {
+                            if (card != null && (!hasEnabledQuery(this) || new CardUtil.CardPredicate(this, true).test(card))) {
                                 for (int i = 0; i < count + addedCount; i++) {
                                     PaperCard finalCard = CardUtil.getCardByNameAndEdition(request.cardName, card.getEdition());
                                     if (finalCard != null)
@@ -237,10 +245,11 @@ public class RewardData implements Serializable {
                         } else {
                             for (int i = 0; i < count + addedCount; i++) {
                                 PaperCard card = StaticData.instance().getCommonCards().getCard(cardName);
-                                if (card != null)
-                                    ret.add(new Reward(card, isNoSell));
-                                else
+                                if (card == null) {
                                     System.err.println("Missing card: " + cardName);
+                                } else if (!hasEnabledQuery(this) || new CardUtil.CardPredicate(this, true).test(card)) {
+                                    ret.add(new Reward(card, isNoSell));
+                                }
                             }
                         }
                     } else if (sourceDeck != null && !sourceDeck.isEmpty()) {

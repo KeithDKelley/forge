@@ -94,6 +94,19 @@ As a contrasting and complicated example that will return no matching results, c
     }
 ```
 
+Planes can opt into Scryfall-like reward filters with `"enableRewardQueries": true` in `config.json`.
+When enabled, `card` and `deckCard` rewards may include a `query` string. The query is combined with any other reward fields, so both the query and the legacy filters must match.
+
+```json
+    {
+      "type": "card",
+      "count": 1,
+      "query": "t:creature (r:rare or r:mythic) -t:legendary"
+    }
+```
+
+The query syntax uses the same parser as Forge's advanced collection search: implicit `and`, explicit `and`, `or`/`|`, `not`/`-`, parentheses, quoted phrases, comparison operators, color filters, type/text/name/set/rarity filters, and color identity filters such as `id<=c`, `identity:uw`, and `coloridentity>=esper`.
+
 
 
 # Fields:
@@ -110,6 +123,13 @@ Valid options are:
 * `deckCard` is only used with rewards from [enemies](Create-Enemies.md), this functions as a `card` reward that is limited to cards found in that enemy's deck.
 
 `{"type": "card", ...}`
+
+## **query**
+An optional Scryfall-like search expression for `card` and `deckCard` rewards. This field is ignored unless the plane has `"enableRewardQueries": true` in `config.json`.
+
+`{..., "query": "t:artifact -t:creature mv<=3", ...}`
+
+`{..., "query": "(o:\"draw a card\" or kw:flying) id<=uw -t:basic", ...}`
 
 ## **probability** 
 The probability of this reward being given out, on a decimal scale from 0 to 1. (Defaults to 1 if not provided)

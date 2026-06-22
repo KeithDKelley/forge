@@ -21,6 +21,7 @@ import forge.game.GameType;
 import forge.item.BoosterPack;
 import forge.item.PaperCard;
 import forge.item.PaperCardPredicates;
+import forge.itemmanager.SFilterUtil;
 import forge.item.SealedTemplate;
 import forge.item.generation.UnOpenedProduct;
 import forge.model.FModel;
@@ -58,6 +59,7 @@ public class CardUtil {
         private final List<CardType.Supertype> superType = new ArrayList<>();
         private final List<Integer> manaCosts = new ArrayList<>();
         private final Pattern text;
+        private final Predicate<PaperCard> query;
         private final boolean matchAllSubTypes;
         private final boolean matchAllColors;
         private int colors;
@@ -120,6 +122,8 @@ public class CardUtil {
             if (!this.manaCosts.isEmpty() && !this.manaCosts.contains(card.getRules().getManaCost().getCMC()))
                 return !this.shouldBeEqual;
             if (this.text != null && !this.text.matcher(card.getRules().getOracleText()).find())
+                return !this.shouldBeEqual;
+            if (this.query != null && !this.query.test(card))
                 return !this.shouldBeEqual;
 
             if (this.matchAllColors) {
@@ -249,6 +253,11 @@ public class CardUtil {
             for (int i = 0; type.manaCosts != null && i < type.manaCosts.length; i++)
                 manaCosts.add(type.manaCosts[i]);
             text = getPattern(type);
+            if (Config.instance().getConfigData().enableRewardQueries && type.query != null && !type.query.trim().isEmpty()) {
+                query = SFilterUtil.buildTextFilter(type.query, false, true, true, true, true);
+            } else {
+                query = null;
+            }
             if (type.colors == null || type.colors.length == 0) {
                 this.colors = MagicColor.ALL_COLORS;
             } else {

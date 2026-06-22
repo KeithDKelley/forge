@@ -168,123 +168,14 @@ public abstract class AdvancedSearchParser {
 
             case "c":
             case "color":
-                if (valueStr.matches("\\d+")) {
-                    try {
-                        byte colorCnt = Byte.parseByte(valueStr);
+                predicate = parseColorToken(opUsed, valueStr, false);
+                break;
 
-                        switch (opUsed) {
-                            case ":":
-                            case "=": 
-                                predicate = CardRulesPredicates.hasCntColors(colorCnt);
-                                break;
-                                
-                            case "!":
-                            case "!=":
-                                predicate = CardRulesPredicates.hasCntColors(colorCnt).negate();
-                                break;
-
-                            case ">=":
-                                predicate = CardRulesPredicates.hasAtLeastCntColors(colorCnt);
-                                break;
-
-                            case ">":
-                                predicate = CardRulesPredicates.hasMoreCntColors(colorCnt);
-                                break;
-
-                            case "<=":
-                                predicate = CardRulesPredicates.hasAtMostCntColors(colorCnt);
-                                break;
-
-                            case "<":
-                                predicate = CardRulesPredicates.hasLessCntColors(colorCnt);
-                                break;
-                        }
-                    }
-                    catch (NumberFormatException ignored) {}
-                } else {
-                    switch(valueStr) {
-                        case "c":
-                        case "colorless":
-                            switch (opUsed) {
-                                case ":":
-                                case "=": 
-                                case "<=":
-                                    predicate = CardRulesPredicates.IS_COLORLESS;
-                                    break;
-
-                                case "!=":
-                                case ">":
-                                    predicate = CardRulesPredicates.IS_COLORLESS.negate();
-                                    break;
-                            }
-                            break;
-
-                        case "m":
-                        case "multi":
-                        case "multicolor":
-                            switch (opUsed) {
-                                case "!":
-                                case ":":
-                                case "=": 
-                                case ">=":
-                                case ">": 
-                                    predicate = CardRulesPredicates.IS_MULTICOLOR;
-                                    break;
-
-                                case "!=":
-                                    predicate = CardRulesPredicates.IS_MONOCOLOR;
-                                    break;
-
-                                case "<":
-                                    predicate = CardRulesPredicates.hasAtMostCntColors((byte)1);
-                                    break;
-                            }
-                            break;
-
-                        default:
-                            byte givenMask = getColorMaskFromString(valueStr);
-                            switch (opUsed) {
-                                case ":":
-                                case ">=": 
-                                    predicate = card -> {
-                                        byte cardMask = card.getColor().getColor();
-
-                                        return (cardMask & givenMask) == givenMask;
-                                    };
-                                    break;
-
-                                case "!":
-                                case "=":
-                                    predicate = card -> card.getColor().getColor() == givenMask;
-                                    break;
-
-                                case "!=":
-                                    predicate = card -> card.getColor().getColor() != givenMask;
-                                    break;
-
-                                case ">":
-                                    predicate = card -> {
-                                        byte cardMask = card.getColor().getColor();
-                                        return (cardMask & givenMask) == givenMask && (cardMask & ~givenMask) != 0;
-                                    };
-                                    break;
-
-                                case "<=":
-                                    predicate = card -> {
-                                        byte cardMask = card.getColor().getColor();
-                                        return (cardMask & ~givenMask) == 0;
-                                    };
-                                    break;
-
-                                case "<":
-                                    predicate = card -> {
-                                        byte cardMask = card.getColor().getColor();
-                                        return (cardMask & ~givenMask) == 0 && cardMask != givenMask;
-                                    };
-                                    break;
-                            }
-                    }
-                }
+            case "id":
+            case "identity":
+            case "coloridentity":
+            case "color_identity":
+                predicate = parseColorToken(opUsed, valueStr, true);
                 break;
 
             case "is":
@@ -485,6 +376,99 @@ public abstract class AdvancedSearchParser {
             case "<":  op = ComparableOp.LESS_THAN; break;
         }
         return op;
+    }
+
+    private static Predicate<CardRules> parseColorToken(String opUsed, String valueStr, boolean colorIdentity) {
+        if (valueStr.matches("\\d+")) {
+            try {
+                byte colorCnt = Byte.parseByte(valueStr);
+
+                return switch (opUsed) {
+                    case ":", "=" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() == colorCnt
+                            : CardRulesPredicates.hasCntColors(colorCnt);
+                    case "!", "!=" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() != colorCnt
+                            : CardRulesPredicates.hasCntColors(colorCnt).negate();
+                    case ">=" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() >= colorCnt
+                            : CardRulesPredicates.hasAtLeastCntColors(colorCnt);
+                    case ">" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() > colorCnt
+                            : CardRulesPredicates.hasMoreCntColors(colorCnt);
+                    case "<=" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() <= colorCnt
+                            : CardRulesPredicates.hasAtMostCntColors(colorCnt);
+                    case "<" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() < colorCnt
+                            : CardRulesPredicates.hasLessCntColors(colorCnt);
+                    default -> null;
+                };
+            }
+            catch (NumberFormatException ignored) {
+                return null;
+            }
+        }
+
+        switch(valueStr) {
+            case "c":
+            case "colorless":
+                return switch (opUsed) {
+                    case ":", "=", "<=" -> colorIdentity
+                            ? card -> card.getColorIdentity().isColorless()
+                            : CardRulesPredicates.IS_COLORLESS;
+                    case "!=", ">" -> colorIdentity
+                            ? card -> !card.getColorIdentity().isColorless()
+                            : CardRulesPredicates.IS_COLORLESS.negate();
+                    default -> null;
+                };
+
+            case "m":
+            case "multi":
+            case "multicolor":
+                return switch (opUsed) {
+                    case "!", ":", "=", ">=", ">" -> colorIdentity
+                            ? card -> card.getColorIdentity().isMulticolor()
+                            : CardRulesPredicates.IS_MULTICOLOR;
+                    case "!=" -> colorIdentity
+                            ? card -> !card.getColorIdentity().isMulticolor()
+                            : CardRulesPredicates.IS_MONOCOLOR;
+                    case "<" -> colorIdentity
+                            ? card -> card.getColorIdentity().countColors() <= 1
+                            : CardRulesPredicates.hasAtMostCntColors((byte)1);
+                    default -> null;
+                };
+
+            default:
+                byte givenMask = getColorMaskFromString(valueStr);
+                return switch (opUsed) {
+                    case ":", ">=" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return (cardMask & givenMask) == givenMask;
+                    };
+                    case "!", "=" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return cardMask == givenMask;
+                    };
+                    case "!=" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return cardMask != givenMask;
+                    };
+                    case ">" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return (cardMask & givenMask) == givenMask && (cardMask & ~givenMask) != 0;
+                    };
+                    case "<=" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return (cardMask & ~givenMask) == 0;
+                    };
+                    case "<" -> card -> {
+                        byte cardMask = colorIdentity ? card.getColorIdentity().getColor() : card.getColor().getColor();
+                        return (cardMask & ~givenMask) == 0 && cardMask != givenMask;
+                    };
+                    default -> null;
+                };
+        }
     }
 
     private static byte getColorMaskFromString(String valueStr) {

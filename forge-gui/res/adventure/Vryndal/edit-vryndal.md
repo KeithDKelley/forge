@@ -34,6 +34,7 @@ Global settings that apply to every session on this plane.
 | `restrictedEditions` | string[] | Set codes whose cards are excluded entirely |
 | `restrictedEvents` | string[] | Set codes excluded from draft/sealed events |
 | `usePriceListPrices` | bool | Use the global price list for shops |
+| `enableRewardQueries` | bool | Enables Scryfall-like `query` filters in reward data |
 | `starterEditions` / `starterEditionNames` | string[] | Sets available for jumpstart-style starts |
 
 ### Difficulties
@@ -137,6 +138,7 @@ An array of shop definitions. Each shop has:
 | Field | Notes |
 |---|---|
 | `count` | Number of cards drawn from this pool |
+| `query` | Scryfall-like search expression, enabled by `enableRewardQueries` |
 | `cardText` | Regex matched against oracle text to filter eligible cards |
 | `colors` | (optional) Array of color names to further restrict the pool |
 
