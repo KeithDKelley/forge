@@ -5,6 +5,16 @@ Game format is singleton, no planeswalkers.
 Global scryfall filter:
 -is:ub is:firstprinting -set:eoe -set:eos -set:eoc -otag:"draft matters" -name:"A-" -border:silver -set:unf -o:"commander" -set:OTJ -set:OTP -set:BIG -set:OTC -st:"alchemy" -t:planeswalker -(o:"as long as you control a" AND o:"planeswalker") -set:ptk date<2026-06-21 -t:conspiracy -t:scheme -t:plane -set:dft -set:dsk -set:CLU -set:mkm
 
+OTJ
+OTP
+BIG
+OTC
+EOE
+EOS
+EOC
+CLU
+MKM
+
 Goal is to have a much more constrained card pool at first that opens up. The player is "The Wanderer", who is going to start in "The Multiversal Clockwork", a sort of limbo-space between worlds where they ended up after their world was destroyed.
 
 They start with 40 wastes, and two packs of 15 cards selected from the following criteria:
