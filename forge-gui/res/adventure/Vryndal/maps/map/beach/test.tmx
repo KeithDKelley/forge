@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="4">
  <tileset firstgid="1" source="../../tileset/main.tsx"/>
  <layer id="1" name="Ground" width="15" height="15">
   <data encoding="csv">
@@ -62,13 +62,15 @@
 </data>
  </layer>
  <objectgroup id="5" name="Objects">
-  <object id="1" template="../../obj/gold.tx" x="113.764" y="87.0705"/>
-  <object id="2" template="../../obj/enemy.tx" x="74.995" y="228.163">
+  <object id="1" template="../../obj/gold.tx" x="104.866" y="71.1817"/>
+  <object id="2" template="../../obj/enemy.tx" x="107.408" y="99.146">
    <properties>
-    <property name="Type" value="Ghost"/>
+    <property name="Type" value="enemy"/>
+    <property name="enemy" value="Ghost"/>
     <property name="pursueRange" type="int" value="50"/>
     <property name="threatRange" type="int" value="50"/>
    </properties>
   </object>
+  <object id="3" template="../../obj/entry_up.tx" x="69.2751" y="233.247" width="132.941" height="17.2711"/>
  </objectgroup>
 </map>
