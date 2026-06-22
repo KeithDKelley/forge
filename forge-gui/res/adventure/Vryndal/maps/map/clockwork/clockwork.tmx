@@ -317,6 +317,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="Objects">
+  <object id="4" template="../../obj/entry_up.tx" x="880" y="576" width="48" height="16">
+   <properties>
+    <property name="spawn" value="true"/>
+    <property name="noExit" value="true"/>
+   </properties>
+  </object>
   <object id="2" template="../../obj/treasure.tx" x="945" y="560">
    <properties>
     <property name="reward">[

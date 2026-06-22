@@ -5,8 +5,8 @@
   "playerBaseSpeed": 32,
   "minDeckSize": 40,
   "maxNumberOfDecks": 20,
-  "colorIds":["W","U","B","R","G"],  
-  "colorIdNames":["tr(lblWhite) [+W]","tr(lblBlue) [+U]","tr(lblBlack) [+B]","tr(lblRed) [+R]","tr(lblGreen) [+G]"],
+  "colorIds":["C"],
+  "colorIdNames":["tr(lblColorless) [+C]"],
   "restrictedCards": [
     "Black Lotus",
     "Mox Emerald",
@@ -122,33 +122,8 @@
       "lifeLoss": 0.2,
       "sellFactor": 0.5,
       "shardSellRatio": 0.8,
-      "starterDecks": {
-        "W":"decks/starter/white_n.json",
-        "B":"decks/starter/black_n.json",
-        "U":"decks/starter/blue_n.json",
-        "R":"decks/starter/red_n.json",
-        "G":"decks/starter/green_n.json"
-      },
       "constructedStarterDecks": {
-        "W":"decks/starter/Adventure - Low Azorius.dck",
-        "B":"decks/starter/Adventure - Low Rakdos.dck",
-        "U":"decks/starter/Adventure - Low Dimir.dck",
-        "R":"decks/starter/Adventure - Low Gruul.dck",
-        "G":"decks/starter/Adventure - Low Selesnya.dck"
-      },
-      "pileDecks": {
-        "W":"decks/starter/pile_white_n.json",
-        "B":"decks/starter/pile_black_n.json",
-        "U":"decks/starter/pile_blue_n.json",
-        "R":"decks/starter/pile_red_n.json",
-        "G":"decks/starter/pile_green_n.json"
-      },
-      "commanderDecks": {
-        "W":"decks/starter/commander/white_01.dck",
-        "B":"decks/starter/commander/black_01.dck",
-        "U":"decks/starter/commander/blue_01.dck",
-        "R":"decks/starter/commander/red_01.dck",
-        "G":"decks/starter/commander/green_01.dck"
+        "C":"decks/starter/40 Wastes.dck"
       },
       "startItems": []
     }
@@ -178,4 +153,3 @@
       "(All)"
     ]
 }
-
