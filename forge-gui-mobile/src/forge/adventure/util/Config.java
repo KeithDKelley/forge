@@ -120,6 +120,7 @@ public class Config {
             e.printStackTrace();
             configData = new ConfigData();
         }
+        AdventureCardMetadata.configure(this, configData);
 
     }
 

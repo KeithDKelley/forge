@@ -35,6 +35,7 @@ Global settings that apply to every session on this plane.
 | `restrictedEvents` | string[] | Set codes excluded from draft/sealed events |
 | `usePriceListPrices` | bool | Use the global price list for shops |
 | `enableRewardQueries` | bool | Enables Scryfall-like `query` filters in reward data |
+| `rewardQueryMetadata` | string[] | Plane-local JSONL metadata overlays for `query` filters |
 | `starterEditions` / `starterEditionNames` | string[] | Sets available for jumpstart-style starts |
 
 ### Difficulties
@@ -141,6 +142,8 @@ An array of shop definitions. Each shop has:
 | `query` | Scryfall-like search expression, enabled by `enableRewardQueries` |
 | `cardText` | Regex matched against oracle text to filter eligible cards |
 | `colors` | (optional) Array of color names to further restrict the pool |
+
+`query` also supports Vryndal metadata from `data/card_metadata.jsonl`, including `tag:foo`, `sf:path.to.value`, and numeric comparisons like `sf:prices.usd<1`.
 
 ---
 

@@ -12,9 +12,22 @@ import forge.itemmanager.advancedsearchparsers.RarityParser;
 import forge.util.ComparableOp;
 import forge.util.PredicateString.StringOp;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 
 public abstract class AdvancedSearchParser {
+    public interface PaperCardTokenParser {
+        Predicate<PaperCard> parse(String key, String operator, String value);
+    }
+
+    private static final List<PaperCardTokenParser> paperCardTokenParsers = new CopyOnWriteArrayList<>();
+
+    public static void registerPaperCardTokenParser(PaperCardTokenParser parser) {
+        if (parser != null && !paperCardTokenParsers.contains(parser)) {
+            paperCardTokenParsers.add(parser);
+        }
+    }
 
     public static Predicate<CardRules> parseAdvancedRulesToken(String token) {
         boolean negated = false;
@@ -353,7 +366,15 @@ public abstract class AdvancedSearchParser {
         }
 
         if (predicate == null) {
-            return null;
+            for (PaperCardTokenParser parser : paperCardTokenParsers) {
+                predicate = parser.parse(key, opUsed, valueStr);
+                if (predicate != null) {
+                    break;
+                }
+            }
+            if (predicate == null) {
+                return null;
+            }
         }
 
         if (negated) {

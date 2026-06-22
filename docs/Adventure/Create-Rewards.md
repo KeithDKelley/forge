@@ -107,7 +107,30 @@ When enabled, `card` and `deckCard` rewards may include a `query` string. The qu
 
 The query syntax uses the same parser as Forge's advanced collection search: implicit `and`, explicit `and`, `or`/`|`, `not`/`-`, parentheses, quoted phrases, comparison operators, color filters, type/text/name/set/rarity filters, and color identity filters such as `id<=c`, `identity:uw`, and `coloridentity>=esper`.
 
+Planes may also side-load additional metadata for these queries with `rewardQueryMetadata`, an array of JSONL files relative to the plane root:
 
+```json
+{
+  "enableRewardQueries": true,
+  "rewardQueryMetadata": [
+    "data/card_metadata.jsonl"
+  ]
+}
+```
+
+Each metadata file is line-delimited JSON. Blank lines and lines starting with `#` are ignored. Rows are matched to Forge cards by `match.scryfallSet` plus `match.collectorNumber`, `match.forgeEdition` plus `match.collectorNumber`, or by `match.name`.
+
+```json
+{"match":{"scryfallSet":"ogw","collectorNumber":"184","name":"Wastes"},"tags":["basic-wastes"],"sf":{"oracle_id":"...","games":["paper","mtgo"],"legalities":{"commander":"legal"},"prices":{"usd":0.25}}}
+```
+
+Metadata queries support `tag:` / `tags:`, direct metadata paths, and namespaced paths:
+
+```json
+{ "type": "card", "count": 1, "query": "tag:basic-wastes" }
+{ "type": "card", "count": 1, "query": "sf:legalities.commander:legal sf:prices.usd<1" }
+{ "type": "card", "count": 1, "query": "scryfall.games:paper -sf:promo_types:alchemy" }
+```
 
 # Fields:
 

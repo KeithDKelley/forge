@@ -33,6 +33,7 @@ public class ConfigData {
     public String[] allowedEvents;
     public String[] allowedJumpstart;
     public boolean enableRewardQueries = false;
+    public String[] rewardQueryMetadata;
     public String defaultBasicLandSet = "JMP";
     public boolean enableGeneticAI = true;
     public String chaosDeckFormat;

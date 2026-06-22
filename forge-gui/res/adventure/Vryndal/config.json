@@ -110,6 +110,9 @@
   ],
   "usePriceListPrices": true,
   "enableRewardQueries": true,
+  "rewardQueryMetadata": [
+    "data/card_metadata.jsonl"
+  ],
   "difficulties": [{
       "name": "Normal",
       "startingLife": 10,
