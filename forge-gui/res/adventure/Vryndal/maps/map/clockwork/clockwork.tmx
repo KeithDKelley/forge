@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="4">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="5">
  <tileset firstgid="1" source="../../tileset/main.tsx"/>
  <layer id="1" name="Ground" width="100" height="100">
   <data encoding="csv">
@@ -317,10 +317,10 @@
 </data>
  </layer>
  <objectgroup id="2" name="Objects">
-  <object id="4" template="../../obj/entry_up.tx" x="880" y="576" width="48" height="16">
+  <object id="4" template="../../obj/entry_up.tx" x="880" y="572.667" width="6.33333" height="4.33333">
    <properties>
-    <property name="spawn" value="true"/>
     <property name="noExit" value="true"/>
+    <property name="spawn" value="true"/>
    </properties>
   </object>
   <object id="2" template="../../obj/treasure.tx" x="945" y="560">
@@ -329,8 +329,7 @@
 {
 	&quot;type&quot;: &quot;card&quot;,
 	&quot;count&quot;: 15,
-	&quot;cardTypes&quot;: [&quot;Creature&quot;],
-	&quot;colorType&quot;: &quot;Colorless&quot;
+	&quot;query&quot;: &quot;t:creature id:c&quot;
 }
 ]</property>
    </properties>
