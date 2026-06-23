@@ -64,6 +64,11 @@ public class PlayerZone extends Zone {
             if (PlayerZone.this.is(ZoneType.Exile) && (c.isForetold() || c.isOnAdventure())) {
                 return true;
             }
+            if (PlayerZone.this.is(ZoneType.Command)
+                    && c.getGame().getRules().hasAppliedVariant(forge.game.GameType.BattleBox)
+                    && c.isLand()) {
+                return true;
+            }
 
             for (final SpellAbility sa : c.getSpellAbilities()) {
                 if (PlayerZone.this.is(sa.getRestrictions().getZone())) {

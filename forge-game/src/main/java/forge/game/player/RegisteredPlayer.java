@@ -171,6 +171,9 @@ public class RegisteredPlayer {
                 start.setStartingLife(start.getStartingLife() + 10);
             }
         }
+        if (appliedVariants.contains(GameType.BattleBox)) {
+            start.setStartingHand(4);
+        }
     	if (appliedVariants.contains(GameType.Planechase)) {
             start.planes = planes;
     	}

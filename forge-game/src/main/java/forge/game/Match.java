@@ -2,6 +2,7 @@ package forge.game;
 
 import com.google.common.collect.*;
 import com.google.common.eventbus.EventBus;
+import forge.StaticData;
 import forge.LobbyPlayer;
 import forge.deck.CardPool;
 import forge.deck.Deck;
@@ -31,6 +32,10 @@ import java.util.Map.Entry;
 
 public class Match {
     private static List<PaperCard> removedCards = Lists.newArrayList();
+    private static final String[] BATTLE_BOX_LANDS = {
+            "Plains", "Island", "Swamp", "Mountain", "Forest",
+            "Azorius Guildgate", "Dimir Guildgate", "Rakdos Guildgate", "Gruul Guildgate", "Selesnya Guildgate"
+    };
     private final List<RegisteredPlayer> players;
     private final GameRules rules;
     private final String title;
@@ -217,6 +222,55 @@ public class Match {
         library.setCards(newLibrary);
     }
 
+    private static List<Card> createCards(final CardPool section, final Player owner, final boolean canRandomFoil) {
+        List<Card> cards = new ArrayList<>();
+        for (final Entry<PaperCard, Integer> stackOfCards : section) {
+            final PaperCard cp = stackOfCards.getKey();
+            for (int i = 0; i < stackOfCards.getValue(); i++) {
+                final Card card = Card.fromPaperCard(cp, owner);
+                if (cp.isFoil() || (canRandomFoil && MyRandom.percentTrue(5))) {
+                    card.setRandomFoil();
+                }
+                card.setCollectible(true);
+                cards.add(card);
+            }
+        }
+        return cards;
+    }
+
+    private static void addBattleBoxLands(final Player player) {
+        for (String land : BATTLE_BOX_LANDS) {
+            final PaperCard paperCard = StaticData.instance().getCommonCards().getCard(land);
+            if (paperCard == null) {
+                continue;
+            }
+            final Card card = Card.fromPaperCard(paperCard, player);
+            card.setCollectible(false);
+            card.setStartsGameInPlay(true);
+            player.getZone(ZoneType.Command).add(card);
+        }
+    }
+
+    private void prepareBattleBoxLibraries(final Game game, final Deck sourceDeck, final boolean canRandomFoil) {
+        List<Card> sharedLibrary = createCards(sourceDeck.getMain(), game.getPlayers().get(0), canRandomFoil);
+        Collections.shuffle(sharedLibrary, MyRandom.getRandom());
+
+        for (Player player : game.getPlayers()) {
+            player.getZone(ZoneType.Library).removeAllCards(true);
+        }
+
+        int playerIndex = 0;
+        for (Card card : sharedLibrary) {
+            Player owner = game.getPlayers().get(playerIndex);
+            if (card.getOwner() != owner) {
+                card = Card.fromPaperCard(card.getPaperCard(), owner);
+                card.setCollectible(true);
+            }
+            owner.getZone(ZoneType.Library).add(card);
+            playerIndex = (playerIndex + 1) % game.getPlayers().size();
+        }
+    }
+
     private void prepareAllZones(final Game game) {
         // need this code here, otherwise observables fail
         Trigger.resetIDs();
@@ -231,6 +285,9 @@ public class Match {
         final List<RegisteredPlayer> playersConditions = game.getMatch().getPlayers();
 
         boolean isFirstGame = gameOutcomes.isEmpty();
+        boolean isBattleBox = rules.hasAppliedVariant(GameType.BattleBox);
+        Deck battleBoxDeck = null;
+        boolean battleBoxRandomFoil = false;
         boolean canSideBoard = !isFirstGame && rules.getGameType().isSideboardingAllowed();
         // Only allow this if feature flag is on AND for certain match types
         boolean sideboardForAIs = rules.getSideboardForAI() &&
@@ -313,14 +370,24 @@ public class Match {
                 }
             }
 
-            preparePlayerZone(player, ZoneType.Library, myDeck.getLeft().getMain(), psc.useRandomFoil());
-            if (myDeck.getLeft().has(DeckSection.Sideboard)) {
+            if (isBattleBox) {
+                if (battleBoxDeck == null) {
+                    battleBoxDeck = myDeck.getLeft();
+                    battleBoxRandomFoil = psc.useRandomFoil();
+                }
+            } else {
+                preparePlayerZone(player, ZoneType.Library, myDeck.getLeft().getMain(), psc.useRandomFoil());
+            }
+            if (!isBattleBox && myDeck.getLeft().has(DeckSection.Sideboard)) {
                 preparePlayerZone(player, ZoneType.Sideboard, myDeck.getLeft().get(DeckSection.Sideboard), psc.useRandomFoil());
 
                 player.assignCompanion(game, person);
             }
 
             player.initVariantsZones(psc);
+            if (isBattleBox) {
+                addBattleBoxLands(player);
+            }
 
             player.shuffle(null);
 
@@ -341,6 +408,13 @@ public class Match {
                 removedAnteCards.putAll(player, myRemovedAnteCards);
             }
             unsupported.put(player, myDeck.getRight());
+        }
+
+        if (isBattleBox && battleBoxDeck != null) {
+            prepareBattleBoxLibraries(game, battleBoxDeck, battleBoxRandomFoil);
+            for (Player player : players) {
+                player.shuffle(null);
+            }
         }
 
         final Localizer localizer = Localizer.getInstance();
