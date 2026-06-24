@@ -12,6 +12,7 @@ import com.google.common.collect.Multimap;
 import forge.card.CardStateName;
 import forge.game.Game;
 import forge.game.GameActionUtil;
+import forge.game.GameType;
 import forge.game.ability.ApiType;
 import forge.game.card.Card;
 import forge.game.card.CardCollection;
@@ -47,6 +48,14 @@ public class ComputerUtilAbility {
             }
             return player.canPlayLand(c, false, c.getFirstSpellAbility());
         });
+        if (game.getRules().hasAppliedVariant(GameType.BattleBox)) {
+            landList.addAll(CardLists.filter(player.getCardsIn(ZoneType.Command), c -> {
+                if (!c.hasPlayableLandFace()) {
+                    return false;
+                }
+                return c.getAllPossibleAbilities(player, true).stream().anyMatch(SpellAbility::isLandAbility);
+            }));
+        }
 
         final CardCollection landsNotInHand = new CardCollection(player.getCardsIn(ZoneType.Graveyard));
         landsNotInHand.addAll(game.getCardsIn(ZoneType.Exile));

@@ -246,9 +246,9 @@ public class Match {
             }
             final Card card = Card.fromPaperCard(paperCard, player);
             card.setCollectible(false);
-            card.setStartsGameInPlay(true);
             player.getZone(ZoneType.Command).add(card);
         }
+        player.updateZoneForView(player.getZone(ZoneType.Command));
     }
 
     private void prepareBattleBoxLibraries(final Game game, final Deck sourceDeck, final boolean canRandomFoil) {

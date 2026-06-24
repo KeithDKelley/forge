@@ -49,6 +49,7 @@ import forge.deck.CardPool;
 import forge.deck.Deck;
 import forge.deckchooser.FDeckViewer;
 import forge.game.GameEntityView;
+import forge.game.GameType;
 import forge.game.GameView;
 import forge.game.card.Card;
 import forge.game.card.CardView;
@@ -949,6 +950,18 @@ public final class CMatchUI
         	zones.add(new PlayerZoneUpdate(p, ZoneType.Hand));
         }
         updateZones(zones);
+        if (isBattleBoxGame()) {
+            for (final PlayerView player : getLocalPlayers()) {
+                FloatingZone.show(this, player, ZoneType.Command);
+                break;
+            }
+        }
+    }
+
+    private boolean isBattleBoxGame() {
+        final GameView gameView = getGameView();
+        return gameView != null && (gameView.getGameType() == GameType.BattleBox
+                || (gameView.getGame() != null && gameView.getGame().getRules().hasAppliedVariant(GameType.BattleBox)));
     }
 
     @Override
