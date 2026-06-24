@@ -46,7 +46,7 @@ import forge.util.MyRandom;
 public class Zone implements java.io.Serializable, Iterable<Card> {
     private static final long serialVersionUID = -5687652485777639176L;
 
-    private final CardCollection cardList = new CardCollection();
+    protected final CardCollection cardList;
     protected final ZoneType zoneType;
     protected final Game game;
 
@@ -65,8 +65,13 @@ public class Zone implements java.io.Serializable, Iterable<Card> {
     }
 
     public Zone(final ZoneType zone0, Game game0) {
+        this(zone0, game0, new CardCollection());
+    }
+
+    protected Zone(final ZoneType zone0, Game game0, final CardCollection cards0) {
         zoneType = zone0;
         game = game0;
+        cardList = cards0;
     }
 
     protected void onChanged() {

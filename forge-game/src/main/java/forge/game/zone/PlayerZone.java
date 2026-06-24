@@ -18,6 +18,7 @@
 package forge.game.zone;
 
 import com.google.common.collect.Iterables;
+import forge.game.card.CardCollection;
 import forge.game.card.Card;
 import forge.game.card.CardLists;
 import forge.game.keyword.Keyword;
@@ -83,6 +84,11 @@ public class PlayerZone extends Zone {
 
     public PlayerZone(final ZoneType zone, final Player inPlayer) {
         super(zone, inPlayer.getGame());
+        player = inPlayer;
+    }
+
+    protected PlayerZone(final ZoneType zone, final Player inPlayer, final CardCollection cards) {
+        super(zone, inPlayer.getGame(), cards);
         player = inPlayer;
     }
 

@@ -10,6 +10,7 @@ import forge.deck.DeckFormat;
 import forge.deck.DeckSection;
 import forge.game.ability.AbilityKey;
 import forge.game.card.Card;
+import forge.game.card.CardCollection;
 import forge.game.card.CardCollectionView;
 import forge.game.event.Event;
 import forge.game.event.GameEventAddLog;
@@ -19,6 +20,7 @@ import forge.game.player.Player;
 import forge.game.player.PlayerController;
 import forge.game.player.RegisteredPlayer;
 import forge.game.trigger.Trigger;
+import forge.game.zone.BattleBoxSharedLibraryZone;
 import forge.game.zone.PlayerZone;
 import forge.game.zone.ZoneType;
 import forge.item.PaperCard;
@@ -32,9 +34,14 @@ import java.util.Map.Entry;
 
 public class Match {
     private static List<PaperCard> removedCards = Lists.newArrayList();
-    private static final String[] BATTLE_BOX_LANDS = {
-            "Plains", "Island", "Swamp", "Mountain", "Forest",
+    private static final String[] BATTLE_BOX_BASIC_LANDS = {
+            "Plains", "Island", "Swamp", "Mountain", "Forest"
+    };
+    private static final String[] BATTLE_BOX_ALLIED_TAP_LANDS = {
             "Azorius Guildgate", "Dimir Guildgate", "Rakdos Guildgate", "Gruul Guildgate", "Selesnya Guildgate"
+    };
+    private static final String[] BATTLE_BOX_ENEMY_TAP_LANDS = {
+            "Orzhov Guildgate", "Izzet Guildgate", "Golgari Guildgate", "Boros Guildgate", "Simic Guildgate"
     };
     private final List<RegisteredPlayer> players;
     private final GameRules rules;
@@ -238,8 +245,8 @@ public class Match {
         return cards;
     }
 
-    private static void addBattleBoxLands(final Player player) {
-        for (String land : BATTLE_BOX_LANDS) {
+    private static void addBattleBoxLands(final Player player, final String[] tapLands) {
+        for (String land : Iterables.concat(Arrays.asList(BATTLE_BOX_BASIC_LANDS), Arrays.asList(tapLands))) {
             final PaperCard paperCard = StaticData.instance().getCommonCards().getCard(land);
             if (paperCard == null) {
                 continue;
@@ -252,22 +259,18 @@ public class Match {
     }
 
     private void prepareBattleBoxLibraries(final Game game, final Deck sourceDeck, final boolean canRandomFoil) {
-        List<Card> sharedLibrary = createCards(sourceDeck.getMain(), game.getPlayers().get(0), canRandomFoil);
+        CardCollection sharedLibrary = new CardCollection(createCards(sourceDeck.getMain(), game.getPlayers().get(0), canRandomFoil));
         Collections.shuffle(sharedLibrary, MyRandom.getRandom());
 
-        for (Player player : game.getPlayers()) {
-            player.getZone(ZoneType.Library).removeAllCards(true);
+        List<Player> sharedPlayers = Lists.newArrayList(game.getPlayers());
+        for (Player player : sharedPlayers) {
+            player.replaceZone(ZoneType.Library, new BattleBoxSharedLibraryZone(player, sharedLibrary, sharedPlayers));
         }
-
-        int playerIndex = 0;
         for (Card card : sharedLibrary) {
-            Player owner = game.getPlayers().get(playerIndex);
-            if (card.getOwner() != owner) {
-                card = Card.fromPaperCard(card.getPaperCard(), owner);
-                card.setCollectible(true);
-            }
-            owner.getZone(ZoneType.Library).add(card);
-            playerIndex = (playerIndex + 1) % game.getPlayers().size();
+            card.setZone(game.getPlayers().get(0).getZone(ZoneType.Library));
+        }
+        for (Player player : sharedPlayers) {
+            player.updateZoneForView(player.getZone(ZoneType.Library));
         }
     }
 
@@ -288,6 +291,9 @@ public class Match {
         boolean isBattleBox = rules.hasAppliedVariant(GameType.BattleBox);
         Deck battleBoxDeck = null;
         boolean battleBoxRandomFoil = false;
+        final String[] battleBoxTapLands = MyRandom.getRandom().nextBoolean()
+                ? BATTLE_BOX_ALLIED_TAP_LANDS
+                : BATTLE_BOX_ENEMY_TAP_LANDS;
         boolean canSideBoard = !isFirstGame && rules.getGameType().isSideboardingAllowed();
         // Only allow this if feature flag is on AND for certain match types
         boolean sideboardForAIs = rules.getSideboardForAI() &&
@@ -386,10 +392,12 @@ public class Match {
 
             player.initVariantsZones(psc);
             if (isBattleBox) {
-                addBattleBoxLands(player);
+                addBattleBoxLands(player, battleBoxTapLands);
             }
 
-            player.shuffle(null);
+            if (!isBattleBox) {
+                player.shuffle(null);
+            }
 
             if (isFirstGame) {
                 Map<DeckSection, List<? extends PaperCard>> cardsComplained = player.getController().complainCardsCantPlayWell(myDeck.getLeft());
@@ -412,9 +420,6 @@ public class Match {
 
         if (isBattleBox && battleBoxDeck != null) {
             prepareBattleBoxLibraries(game, battleBoxDeck, battleBoxRandomFoil);
-            for (Player player : players) {
-                player.shuffle(null);
-            }
         }
 
         final Localizer localizer = Localizer.getInstance();
