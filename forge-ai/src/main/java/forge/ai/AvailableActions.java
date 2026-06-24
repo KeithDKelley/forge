@@ -28,7 +28,8 @@ public final class AvailableActions {
     private static final List<ZoneScan> SCANS = List.of(
             new ZoneScan(ZoneType.Hand,        true),
             new ZoneScan(ZoneType.Battlefield, false),
-            new ZoneScan(ZoneType.Flashback,   true));
+            new ZoneScan(ZoneType.Flashback,   true),
+            new ZoneScan(ZoneType.Command,     true));
 
     /** Boolean form: early-exits on the first actionable card. */
     public static boolean compute(Player player, long timeoutMs) {

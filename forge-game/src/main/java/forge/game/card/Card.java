@@ -7446,6 +7446,12 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
                 }
             }
         }
+        if (isInZone(ZoneType.Command) && isLand()
+                && getGame().getRules().hasAppliedVariant(GameType.BattleBox)) {
+            final SpellAbility sa = getCurrentState().getFirstSpellAbility().copy(player);
+            sa.getRestrictions().setZone(ZoneType.Command);
+            abilities.add(sa);
+        }
 
         if (isInPlay() && !isPhasedOut() && player.canCastSorcery()) {
             if (getCurrentStateName() == CardStateName.RightSplit || getCurrentStateName() == CardStateName.EmptyRoom) {

@@ -24,6 +24,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxtst6 \
     libxi6 \
     x11-utils \
+    # Null ALSA device for JavaSound in headless/VNC sessions
+    libasound2t64 \
+    libasound2-plugins \
+    alsa-utils \
     # Fonts for Swing rendering
     fonts-dejavu \
     fonts-liberation \
@@ -36,6 +40,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     unzip \
     && rm -rf /var/lib/apt/lists/*
+
+# JavaSound needs a default PCM device even when the container has no host audio.
+# Route all ALSA playback to a null sink so Forge can start cleanly under VNC.
+RUN printf '%s\n' \
+    'pcm.!default {' \
+    '    type plug' \
+    '    slave.pcm "null"' \
+    '}' \
+    '' \
+    'ctl.!default {' \
+    '    type null' \
+    '}' \
+    > /etc/asound.conf
 
 # Non-root user, UID 1000 matches host keith — no sudo
 # Ubuntu 24.04 base already has a group/user at 1000; rename them rather than creating new ones

@@ -3,19 +3,33 @@
 # Called by devcontainer.json postStartCommand on every container start.
 set -euo pipefail
 
+# JavaSound needs a default PCM device even when the container has no host audio.
+# Keep this in the startup script as well as the Dockerfile so existing containers
+# pick up the fix before the image is rebuilt.
+cat > "${HOME}/.asoundrc" <<'EOF'
+pcm.!default {
+    type plug
+    slave.pcm "null"
+}
+
+ctl.!default {
+    type null
+}
+EOF
+
 # Idempotent teardown
-pkill -f "Xvfb :1"  2>/dev/null || true
-pkill -f "x11vnc"   2>/dev/null || true
-pkill -f "websockify" 2>/dev/null || true
-pkill -f "openbox"  2>/dev/null || true
+pkill -x Xvfb 2>/dev/null || true
+pkill -x x11vnc 2>/dev/null || true
+pkill -f "[w]ebsockify" 2>/dev/null || true
+pkill -x openbox 2>/dev/null || true
 sleep 0.5
 
 # Virtual framebuffer
-Xvfb :1 -screen 0 1920x1080x24 -nolisten tcp &
+setsid -f Xvfb :1 -screen 0 1920x1080x24 -nolisten tcp >/tmp/xvfb.log 2>&1
 sleep 1
 
-# Window manager (right-click desktop → terminal)
-DISPLAY=:1 openbox --daemon &
+# Window manager (right-click desktop -> terminal)
+DISPLAY=:1 setsid -f openbox >/tmp/openbox.log 2>&1
 sleep 0.3
 
 # VNC server — no password; Docker port forwarding is the access gate
