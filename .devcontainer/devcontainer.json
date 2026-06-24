@@ -1,0 +1,39 @@
+{
+  "name": "MTG Forge Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--memory=6g",
+    "--cpus=4",
+    "--security-opt", "no-new-privileges:true",
+    "--cap-drop", "ALL"
+  ],
+  "forwardPorts": [5901, 6080],
+  "portsAttributes": {
+    "5901": {
+      "label": "VNC Direct",
+      "onAutoForward": "silent"
+    },
+    "6080": {
+      "label": "noVNC Browser",
+      "onAutoForward": "notify"
+    }
+  },
+  "containerEnv": {
+    "DISPLAY": ":1"
+  },
+  "postStartCommand": "bash /workspace/.devcontainer/start-vnc.sh",
+  "remoteUser": "forge",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven"
+      ]
+    }
+  }
+}
