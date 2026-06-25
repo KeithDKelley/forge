@@ -1220,6 +1220,10 @@ public class Player extends GameEntity implements Comparable<Player> {
                 }
             }
 
+            if (game.getRules().hasAppliedVariant(GameType.BattleBox)) {
+                c.setOwner(this);
+            }
+
             c = game.getAction().moveTo(hand, c, cause, params);
             drawn.add(c);
 

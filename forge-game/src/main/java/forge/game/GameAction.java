@@ -825,6 +825,9 @@ public class GameAction {
 
         if (c.isRealCommander()) {
             c.setMoveToCommandZone(true);
+        } else if (isBattleBoxCommandLand(c) && zoneFrom != null && zoneFrom.is(ZoneType.Battlefield)
+                && !zoneTo.is(ZoneType.Battlefield) && !zoneTo.is(ZoneType.Command)) {
+            c.setMoveToCommandZone(true);
         }
 
         return c;
@@ -1547,6 +1550,20 @@ public class GameAction {
                         checkAgain |= stateBasedAction_Commander(c, mapParams);
                     }
                 }
+                if (game.getRules().hasAppliedVariant(GameType.BattleBox) && !checkAgain) {
+                    for (final Card c : p.getCardsIn(ZoneType.Graveyard).threadSafeIterable()) {
+                        checkAgain |= stateBasedAction_BattleBoxCommandLand(c, mapParams);
+                    }
+                    for (final Card c : p.getCardsIn(ZoneType.Exile).threadSafeIterable()) {
+                        checkAgain |= stateBasedAction_BattleBoxCommandLand(c, mapParams);
+                    }
+                    for (final Card c : p.getCardsIn(ZoneType.Hand).threadSafeIterable()) {
+                        checkAgain |= stateBasedAction_BattleBoxCommandLand(c, mapParams);
+                    }
+                    for (final Card c : p.getCardsIn(ZoneType.Library).threadSafeIterable()) {
+                        checkAgain |= stateBasedAction_BattleBoxCommandLand(c, mapParams);
+                    }
+                }
 
                 // 704.5z If a player controls a permanent with start your engines! and that player has no speed, that player’s speed becomes 1.
                 if (p.getSpeed() == 0 && p.getCardsIn(ZoneType.Battlefield).anyMatch(c -> c.hasKeyword(Keyword.START_YOUR_ENGINES))) {
@@ -1843,6 +1860,26 @@ public class GameAction {
             }
         }
         return false;
+    }
+
+    private boolean stateBasedAction_BattleBoxCommandLand(Card c, Map<AbilityKey, Object> mapParams) {
+        if (isBattleBoxCommandLand(c) && c.canMoveToCommandZone()) {
+            game.getTracker().flush();
+
+            c.setMoveToCommandZone(false);
+            if (c.getOwner().getController().confirmAction(c.getCurrentState().getFirstSpellAbilityWithFallback(),
+                    PlayerActionConfirmMode.ChangeZoneToAltDestination,
+                    c.getDisplayName() + ": If a Battle Box land would move to another zone from the battlefield, its owner may put it into the command zone.",
+                    null)) {
+                moveTo(c.getOwner().getZone(ZoneType.Command), c, null, mapParams);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBattleBoxCommandLand(final Card c) {
+        return game.getRules().hasAppliedVariant(GameType.BattleBox) && c.isLand() && !c.isCollectible();
     }
 
     private boolean stateBasedAction704_5q(Card c) {
@@ -2338,7 +2375,7 @@ public class GameAction {
             game.setAge(GameStage.Mulligan);
             for (final Player p1 : game.getPlayers()) {
                 // Choose starting hand for each player with multiple hands
-                if (StaticData.instance().getFilteredHandsEnabled() ) {
+                if (!game.getRules().hasAppliedVariant(GameType.BattleBox) && StaticData.instance().getFilteredHandsEnabled() ) {
                     drawStartingHand(p1);
                 } else {
                     p1.drawCards(p1.getStartingHandSize());
@@ -2350,7 +2387,7 @@ public class GameAction {
                 }
             }
 
-            if (game.getRules().getGameType() != GameType.Puzzle) {
+            if (game.getRules().getGameType() != GameType.Puzzle && !game.getRules().hasAppliedVariant(GameType.BattleBox)) {
                 new MulliganService(first).perform();
             }
             if (game.isGameOver()) { break; } // conceded during "mulligan" prompt

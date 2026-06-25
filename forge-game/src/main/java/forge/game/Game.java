@@ -352,7 +352,7 @@ public class Game {
             } else {
                 pl.setStartingLife(psc.getStartingLife());
             }
-            pl.setMaxHandSize(psc.getStartingHand());
+            pl.setMaxHandSize(rules.hasAppliedVariant(GameType.BattleBox) ? 7 : psc.getStartingHand());
             pl.setStartingHandSize(psc.getStartingHand());
 
             if (psc.getManaShards() > 0) {

@@ -38,10 +38,10 @@ public class Match {
             "Plains", "Island", "Swamp", "Mountain", "Forest"
     };
     private static final String[] BATTLE_BOX_ALLIED_TAP_LANDS = {
-            "Azorius Guildgate", "Dimir Guildgate", "Rakdos Guildgate", "Gruul Guildgate", "Selesnya Guildgate"
+            "Idyllic Beachfront", "Contaminated Aquifer", "Geothermal Bog", "Wooded Ridgeline", "Radiant Grove"
     };
     private static final String[] BATTLE_BOX_ENEMY_TAP_LANDS = {
-            "Orzhov Guildgate", "Izzet Guildgate", "Golgari Guildgate", "Boros Guildgate", "Simic Guildgate"
+            "Sunlit Marsh", "Molten Tributary", "Haunted Mire", "Sacred Peaks", "Tangled Islet"
     };
     private final List<RegisteredPlayer> players;
     private final GameRules rules;

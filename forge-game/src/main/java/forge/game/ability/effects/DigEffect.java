@@ -399,7 +399,13 @@ public class DigEffect extends SpellAbilityEffect {
                                 moveParams.put(AbilityKey.CounterTable, table);
                             }
                         }
-                        c = game.getAction().moveTo(c.getController().getZone(destZone1), c, sa, moveParams);
+                        if (game.getRules().hasAppliedVariant(forge.game.GameType.BattleBox)
+                                && srcZone.equals(ZoneType.Library) && destZone1.equals(ZoneType.Hand)) {
+                            c.setOwner(p);
+                            c = game.getAction().moveTo(p.getZone(destZone1), c, sa, moveParams);
+                        } else {
+                            c = game.getAction().moveTo(c.getController().getZone(destZone1), c, sa, moveParams);
+                        }
                         if (destZone1.equals(ZoneType.Battlefield)) {
                             if (addToCombat(c, sa, "Attacking", "Blocking")) {
                                 combatChanged = true;
