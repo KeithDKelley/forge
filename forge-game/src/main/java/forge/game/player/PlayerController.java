@@ -52,6 +52,7 @@ public abstract class PlayerController {
         HeadsOrTails, // coin
         TapOrUntap,
         PlayOrDraw,
+        AlliedOrEnemy,
         OddsOrEvens,
         UntapOrLeaveTapped,
         LeftOrRight,

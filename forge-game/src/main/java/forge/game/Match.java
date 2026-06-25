@@ -258,6 +258,19 @@ public class Match {
         player.updateZoneForView(player.getZone(ZoneType.Command));
     }
 
+    private static String[] chooseBattleBoxTapLands(final FCollectionView<Player> players) {
+        for (final Player player : players) {
+            if (!player.getController().isAI()) {
+                final boolean useAllied = player.getController().chooseBinary(null,
+                        "Choose the Battle Box tap-land cycle.",
+                        PlayerController.BinaryChoiceType.AlliedOrEnemy,
+                        MyRandom.getRandom().nextBoolean());
+                return useAllied ? BATTLE_BOX_ALLIED_TAP_LANDS : BATTLE_BOX_ENEMY_TAP_LANDS;
+            }
+        }
+        return MyRandom.getRandom().nextBoolean() ? BATTLE_BOX_ALLIED_TAP_LANDS : BATTLE_BOX_ENEMY_TAP_LANDS;
+    }
+
     private void prepareBattleBoxLibraries(final Game game, final Deck sourceDeck, final boolean canRandomFoil) {
         CardCollection sharedLibrary = new CardCollection(createCards(sourceDeck.getMain(), game.getPlayers().get(0), canRandomFoil));
         Collections.shuffle(sharedLibrary, MyRandom.getRandom());
@@ -291,9 +304,7 @@ public class Match {
         boolean isBattleBox = rules.hasAppliedVariant(GameType.BattleBox);
         Deck battleBoxDeck = null;
         boolean battleBoxRandomFoil = false;
-        final String[] battleBoxTapLands = MyRandom.getRandom().nextBoolean()
-                ? BATTLE_BOX_ALLIED_TAP_LANDS
-                : BATTLE_BOX_ENEMY_TAP_LANDS;
+        final String[] battleBoxTapLands = isBattleBox ? chooseBattleBoxTapLands(players) : null;
         boolean canSideBoard = !isFirstGame && rules.getGameType().isSideboardingAllowed();
         // Only allow this if feature flag is on AND for certain match types
         boolean sideboardForAIs = rules.getSideboardForAI() &&

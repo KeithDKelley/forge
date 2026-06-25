@@ -1846,6 +1846,9 @@ public class PlayerControllerHuman extends PlayerController implements IGameCont
             case PlayOrDraw:
                 labels = ImmutableList.of(localizer.getMessage("lblPlay"), localizer.getMessage("lblDraw"));
                 break;
+            case AlliedOrEnemy:
+                labels = ImmutableList.of("Allied", "Enemy");
+                break;
             case LeftOrRight:
                 labels = ImmutableList.of(localizer.getMessage("lblLeft"), localizer.getMessage("lblRight"));
                 break;
