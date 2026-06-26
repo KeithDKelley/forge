@@ -399,9 +399,7 @@ public class DigEffect extends SpellAbilityEffect {
                                 moveParams.put(AbilityKey.CounterTable, table);
                             }
                         }
-                        if (game.getRules().hasAppliedVariant(forge.game.GameType.BattleBox)
-                                && srcZone.equals(ZoneType.Library) && destZone1.equals(ZoneType.Hand)) {
-                            c.setOwner(p);
+                        if (assignBattleBoxLibraryCard(sa, c, p, srcZone, destZone1) && !destZone1.isDeck()) {
                             c = game.getAction().moveTo(p.getZone(destZone1), c, sa, moveParams);
                         } else {
                             c = game.getAction().moveTo(c.getController().getZone(destZone1), c, sa, moveParams);
@@ -453,6 +451,7 @@ public class DigEffect extends SpellAbilityEffect {
                             Map<AbilityKey, Object> moveParams = AbilityKey.newMap();
                             AbilityKey.addCardZoneTableParams(moveParams, zoneMovements);
 
+                            assignBattleBoxLibraryCard(sa, c, p, srcZone, destZone2);
                             Card m = game.getAction().moveTo(destZone2, c, libraryPosition2, sa, moveParams);
                             if (remZone2) {
                                 host.addRemembered(m);
@@ -467,6 +466,7 @@ public class DigEffect extends SpellAbilityEffect {
                             if (destZone2 == ZoneType.Exile && !c.canExiledBy(sa, true)) {
                                 continue;
                             }
+                            assignBattleBoxLibraryCard(sa, c, p, srcZone, destZone2);
                             c = game.getAction().moveTo(destZone2, c, sa, moveParams);
                             if (destZone2 == ZoneType.Exile) {
                                 if (sa.hasParam("ExileWithCounters")) {

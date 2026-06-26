@@ -105,6 +105,7 @@ public class DigMultipleEffect extends SpellAbilityEffect {
 
                     for (Card c : extraChosen) {
                         final ZoneType origin = c.getZone().getZoneType();
+                        assignBattleBoxLibraryCard(sa, c, chooser, srcZone, chosenZone);
                         final PlayerZone zone = c.getOwner().getZone(chosenZone);
                         chosen.remove(c);
                         rest.remove(c);
@@ -117,6 +118,7 @@ public class DigMultipleEffect extends SpellAbilityEffect {
 
                 for (Card c : chosen) {
                     final ZoneType origin = c.getZone().getZoneType();
+                    assignBattleBoxLibraryCard(sa, c, chooser, srcZone, destZone1);
                     final PlayerZone zone = c.getOwner().getZone(destZone1);
 
                     if (!sa.hasParam("ChangeLater")) {
@@ -164,6 +166,7 @@ public class DigMultipleEffect extends SpellAbilityEffect {
                     }
                     for (final Card c : afterOrder) {
                         final ZoneType origin = c.getZone().getZoneType();
+                        assignBattleBoxLibraryCard(sa, c, chooser, srcZone, destZone2);
                         Card m = game.getAction().moveTo(destZone2, c, libraryPosition2, sa, AbilityKey.newMap());
                         if (m != null && !origin.equals(m.getZone().getZoneType())) {
                             table.put(origin, m.getZone().getZoneType(), m);
@@ -173,6 +176,7 @@ public class DigMultipleEffect extends SpellAbilityEffect {
                     // just move them randomly
                     for (Card c : rest) {
                         final ZoneType origin = c.getZone().getZoneType();
+                        assignBattleBoxLibraryCard(sa, c, chooser, srcZone, destZone2);
                         final PlayerZone toZone = c.getOwner().getZone(destZone2);
                         c = game.getAction().moveTo(toZone, c, sa);
                         if (!origin.equals(c.getZone().getZoneType())) {

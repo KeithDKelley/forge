@@ -226,6 +226,7 @@ public class DigUntilEffect extends SpellAbilityEffect {
                     }
                     Map<AbilityKey, Object> moveParams = AbilityKey.newMap();
                     AbilityKey.addCardZoneTableParams(moveParams, tableSeq);
+                    assignBattleBoxLibraryCard(sa, c, p, digSite, foundDest);
 
                     if (foundDest.equals(ZoneType.Battlefield)) {
                         moveParams.put(AbilityKey.SimultaneousETB, found);
@@ -303,6 +304,7 @@ public class DigUntilEffect extends SpellAbilityEffect {
                 AbilityKey.addCardZoneTableParams(moveParams, table);
 
                 for (Card c : revealed) {
+                    assignBattleBoxLibraryCard(sa, c, p, digSite, finalDest);
                     c = game.getAction().moveTo(finalDest, c, finalPos, sa, moveParams);
                     if (finalDest == ZoneType.Exile) {
                         handleExiledWith(c, sa);

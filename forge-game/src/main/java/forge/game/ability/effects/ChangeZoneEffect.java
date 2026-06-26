@@ -1302,6 +1302,7 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
                 Map<AbilityKey, Object> moveParams = AbilityKey.newMap();
                 moveParams.put(AbilityKey.FoundSearchingLibrary, searchedLibrary);
                 AbilityKey.addCardZoneTableParams(moveParams, triggerList);
+                assignBattleBoxLibraryCard(sa, c, player, origin, destination);
 
                 if (destination == null) {
                     movedCard = c;

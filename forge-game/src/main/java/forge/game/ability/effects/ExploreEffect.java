@@ -74,6 +74,7 @@ public class ExploreEffect extends SpellAbilityEffect {
                             Localizer.getInstance().getMessage("lblRevealedForExplore") + " - ");
                     final Card r = top.getFirst();
                     if (r.isLand()) {
+                        assignBattleBoxLibraryCard(sa, r, pl, ZoneType.Library, ZoneType.Hand);
                         game.getAction().moveTo(ZoneType.Hand, r, sa, moveParams);
                         revealedLand = true;
                     } else {

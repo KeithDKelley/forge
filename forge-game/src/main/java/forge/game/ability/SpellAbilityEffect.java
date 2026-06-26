@@ -44,6 +44,31 @@ public abstract class SpellAbilityEffect {
 
     public abstract void resolve(SpellAbility sa);
 
+    protected static boolean assignBattleBoxLibraryCard(final SpellAbility sa, final Card card,
+            final Player recipient, final ZoneType sourceZone, final ZoneType destination) {
+        if (sa == null || card == null || recipient == null || sourceZone != ZoneType.Library
+                || destination == null || destination == ZoneType.Library) {
+            return false;
+        }
+        final Game game = recipient.getGame();
+        if (game == null || !game.getRules().hasAppliedVariant(forge.game.GameType.BattleBox)
+                || !card.isInZone(ZoneType.Library)) {
+            return false;
+        }
+
+        card.setOwner(recipient);
+        if (destination == ZoneType.Battlefield && card.getController() != recipient) {
+            card.setController(recipient, game.getNextTimestamp());
+        }
+        return true;
+    }
+
+    protected static boolean assignBattleBoxLibraryCard(final SpellAbility sa, final Card card,
+            final Player recipient, final Collection<ZoneType> sourceZones, final ZoneType destination) {
+        return sourceZones != null && sourceZones.contains(ZoneType.Library)
+                && assignBattleBoxLibraryCard(sa, card, recipient, ZoneType.Library, destination);
+    }
+
     protected String getStackDescription(final SpellAbility sa) {
         // Unless overridden, let the spell description also be the stack description
         return sa.getDescription();
