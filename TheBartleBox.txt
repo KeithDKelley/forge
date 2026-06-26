@@ -2,15 +2,15 @@
 1 Isamaru, Hound of Konda
 1 Cathar Commando
 1 Kor Skyfisher
-1 Thalia, Guardian of Thraben
 1 White Knight
 1 Banisher Priest
-1 Flickerwisp
 1 Mentor of the Meek
+1 Glorious Protector
 1 Restoration Angel
 1 Karmic Guide
 1 Serra Angel
 1 Solitude
+1 Sun Titan
 1 Elesh Norn, Grand Cenobite
 1 Avacyn, Angel of Hope
 1 Ephemerate
@@ -20,11 +20,11 @@
 1 Rebuke
 1 Council's Judgment
 1 Wrath of God
+1 Cleansing Nova
 1 Austere Command
 1 Terminus
 1 Pacifism
 1 Banishing Light
-1 Glorious Anthem
 1 Oblivion Ring
 1 Delver of Secrets
 1 Spectral Sailor
@@ -39,27 +39,26 @@
 1 Consecrated Sphinx
 1 Torrential Gearhulk
 1 Hullbreaker Horror
+1 Blue Elemental Blast
 1 Brainstorm
 1 Censor
 1 Counterspell
-1 Archmage's Charm
-1 Blue Sun's Zenith
-1 Force of Negation
+1 Memory Lapse
 1 Frantic Search
 1 Cryptic Command
 1 Fact or Fiction
 1 Force of Will
+1 Gush
 1 Dig Through Time
 1 Careful Study
 1 Ponder
 1 Treasure Cruise
 1 Treachery
+1 Death's Shadow
 1 Black Knight
-1 Dark Confidant
-1 Drudge Skeletons
 1 Mire Triton
 1 Nullpriest of Oblivion
-1 Grim Haruspex
+1 Hypnotic Specter
 1 Murderous Rider
 1 Phyrexian Rager
 1 Plaguecrafter
@@ -69,6 +68,7 @@
 1 Shriekmaw
 1 Massacre Wurm
 1 Gurmag Angler
+1 Archon of Cruelty
 1 Griselbrand
 1 Dark Ritual
 1 Tragic Slip
@@ -87,10 +87,9 @@
 1 Legion Loyalist
 1 Monastery Swiftspear
 1 Abbot of Keral Keep
-1 Electrostatic Field
 1 Ball Lightning
 1 Bonecrusher Giant
-1 Squee, the Immortal
+1 Magus of the Moon
 1 Avalanche Riders
 1 Flametongue Kavu
 1 Demanding Dragon
@@ -98,31 +97,33 @@
 1 Inferno Titan
 1 Shivan Dragon
 1 Akroma, Angel of Fury
-1 Burst Lightning
 1 Lightning Bolt
 1 Red Elemental Blast
 1 Abrade
+1 Cathartic Pyre
 1 Fire Prophecy
+1 Thrill of Possibility
+1 Chaos Warp
 1 Fireblast
-1 Chain Lightning
 1 Faithless Looting
-1 Last Chance
-1 Embercleave
-1 Furnace of Rath
-1 Sneak Attack
+1 Fireball
+1 Pyroclasm
+1 Tribal Flames
+1 Blasphemous Act
 1 Birds of Paradise
 1 Cankerbloom
 1 Lotus Cobra
 1 Tarmogoyf
 1 Eternal Witness
-1 Leatherback Baloth
 1 Reclamation Sage
 1 Beast Whisperer
 1 Halana, Kessig Ranger
+1 Lhurgoyf
 1 Thrun, the Last Troll
 1 Vengevine
 1 Acidic Slime
 1 Seedborn Muse
+1 Territorial Maro
 1 Allosaurus Rider
 1 Craterhoof Behemoth
 1 Ghalta, Stampede Tyrant
@@ -131,12 +132,11 @@
 1 Giant Growth
 1 Nature's Claim
 1 Vines of Vastwood
+1 Plummet
+1 Prey Upon
 1 Regrowth
 1 Harmonize
-1 Concordant Crossroads
 1 Rancor
-1 Oath of Druids
-1 Sylvan Library
 1 Living Terrain
 1 Bomat Courier
 1 Gingerbrute
@@ -177,12 +177,12 @@
 1 Thief of Sanity
 1 Hostage Taker
 1 Dragonlord Silumgar
-1 Cult Guildmage
 1 Dreadbore
+1 Rix Maadi Guildmage
 1 Terminate
-1 Tymaret, the Murder King
+1 Bedevil
 1 Agonizing Demise
-1 Malfegor
+1 Chainer, Nightmare Adept
 1 Kird Ape
 1 Gallia of the Endless Dance
 1 Gruul Guildmage
@@ -190,33 +190,33 @@
 1 Bloodbraid Elf
 1 Dragonlord Atarka
 1 Bronzehide Lion
-1 Watchwolf
 1 Armadillo Cloak
+1 Aura Shards
 1 Mycoid Shepherd
 1 Mystic Enforcer
 1 Dragonlord Dromoka
 1 Elas il-Kor, Sadistic Pilgrim
-1 Vizkopa Guildmage
+1 Orzhov Guildmage
 1 Vindicate
 1 Unburial Rites
 1 Merciless Eviction
 1 Ashen Rider
-1 League Guildmage
+1 Nivix Guildmage
 1 Electrolyze
 1 Crackling Drake
-1 Fire // Ice
+1 Fire/Ice
 1 Prophetic Bolt
 1 Niv-Mizzet, the Firemind
 1 Deathrite Shaman
 1 Elves of Deep Shadow
 1 Abrupt Decay
-1 Grim Flayer
 1 Putrefy
+1 Poison-Tip Archer
 1 Hogaak, Arisen Necropolis
 1 Justice Strike
+1 Legion Guildmage
 1 Lightning Helix
 1 Boros Reckoner
-1 Feather, the Redeemed
 1 Basandra, Battle Seraph
 1 Aurelia, the Warleader
 1 Applied Biomancy
@@ -235,7 +235,7 @@
 1 Slave of Bolas
 1 Cruel Ultimatum
 1 Darigaaz's Charm
-1 Yurlok of Scorch Thrash
+1 Madrush Cyclops
 1 Hellkite Overlord
 1 Wild Nacatl
 1 Naya Charm
