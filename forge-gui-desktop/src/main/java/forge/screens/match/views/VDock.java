@@ -302,8 +302,9 @@ public class VDock implements IVDoc<CDock> {
      * right after their predecessor in this declaration order.
      */
     public enum DockButtonId {
-        AUTO_PASS      (FSkinProp.ICO_AUTOPASS,         "lblYieldBtnAutoPassTooltip", true),
-        YIELD_SETTINGS (FSkinProp.ICO_DOCK_SETTINGS,    "lblYieldSettings",           true),
+        AUTO_PASS                   (FSkinProp.ICO_AUTOPASS,          "lblYieldBtnAutoPassTooltip",          true),
+        DISABLE_AUTO_MANA_PAY       (FSkinProp.ICO_DOCK_SETTINGS,    "lblDisableAutomaticManaPayment",      true),
+        YIELD_SETTINGS              (FSkinProp.ICO_DOCK_SETTINGS,    "lblYieldSettings",                   true),
         MACRO_RECORD   (FSkinProp.ICO_DOCK_MACRO_RECORD, "lblMacroRecordStartTooltip", true),
         MACRO_PLAY     (FSkinProp.ICO_DOCK_MACRO_PLAY,  "lblMacroPlayUnavailableTooltip", true),
         END_TURN       (FSkinProp.ICO_DOCK_ENDTURN,     "lblEndTurn",                 true),

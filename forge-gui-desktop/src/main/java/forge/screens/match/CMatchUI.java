@@ -1716,6 +1716,7 @@ public final class CMatchUI
         addFullControlEntry(menu, "lblChooseCostOrder", FullControlFlag.ChooseCostOrder, controlFlags);
         addFullControlEntry(menu, "lblChooseCostReductionOrder", FullControlFlag.ChooseCostReductionOrderAndVariableAmount, controlFlags);
         addFullControlEntry(menu, "lblNoPaymentFromManaAbility", FullControlFlag.NoPaymentFromManaAbility, controlFlags);
+        addFullControlEntry(menu, "lblDisableAutomaticManaPayment", FullControlFlag.DisableAutomaticManaPayment, controlFlags);
         addFullControlEntry(menu, "lblNoFreeCombatCostHandling", FullControlFlag.NoFreeCombatCostHandling, controlFlags);
         addFullControlEntry(menu, "lblAllowPaymentStartWithMissingResources", FullControlFlag.AllowPaymentStartWithMissingResources, controlFlags);
         addFullControlEntry(menu, "lblLayerTimestampOrder", FullControlFlag.LayerTimestampOrder, controlFlags);

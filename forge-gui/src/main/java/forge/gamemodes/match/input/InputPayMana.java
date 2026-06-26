@@ -367,7 +367,7 @@ public abstract class InputPayMana extends InputSyncronizedBase {
     }
 
     protected boolean supportAutoPay() {
-        return true;
+        return !player.getController().isFullControl(FullControlFlag.DisableAutomaticManaPayment);
     }
 
     protected void runAsAi(Runnable proc) {

@@ -96,8 +96,9 @@ public class CDock implements ICDoc {
     @Override
     public void initialize() {
         final Map<DockButtonId, UiCommand> commands = Map.ofEntries(
-                Map.entry(DockButtonId.CONCEDE,        matchUI::concede),
-                Map.entry(DockButtonId.YIELD_SETTINGS, () -> new VYieldSettings(matchUI).showDialog()),
+                Map.entry(DockButtonId.CONCEDE,                matchUI::concede),
+                Map.entry(DockButtonId.DISABLE_AUTO_MANA_PAY, this::toggleDisableAutoManaPay),
+                Map.entry(DockButtonId.YIELD_SETTINGS,        () -> new VYieldSettings(matchUI).showDialog()),
                 Map.entry(DockButtonId.END_TURN,       () -> YieldController.endTurn(matchUI.getGameController(), matchUI.getCurrentPlayer())),
                 Map.entry(DockButtonId.AUTO_PASS,      this::toggleAutoPass),
                 Map.entry(DockButtonId.MACRO_RECORD,   this::toggleMacroRecording),
@@ -114,6 +115,22 @@ public class CDock implements ICDoc {
 
     private void toggleAutoPass() {
         YieldController.toggleAutoPassNoActions(matchUI.getGameController());
+        update();
+    }
+
+    private void toggleDisableAutoManaPay() {
+        final forge.game.player.PlayerController ctrl = matchUI.getGameView() != null
+                && matchUI.getCurrentPlayer() != null
+                ? matchUI.getGameView().getGame().getPlayer(matchUI.getCurrentPlayer()).getController()
+                : null;
+        if (ctrl == null) { return; }
+        final forge.game.player.PlayerController.FullControlFlag flag =
+                forge.game.player.PlayerController.FullControlFlag.DisableAutomaticManaPayment;
+        if (ctrl.isFullControl(flag)) {
+            ctrl.getFullControl().remove(flag);
+        } else {
+            ctrl.getFullControl().add(flag);
+        }
         update();
     }
 
@@ -175,6 +192,13 @@ public class CDock implements ICDoc {
     public void update() {
         final ArcState arcs = getArcState();
         view.getButton(DockButtonId.AUTO_PASS).setActive(FModel.getPreferences().getPrefBoolean(FPref.YIELD_AUTO_PASS_NO_ACTIONS));
+        final forge.game.player.PlayerController ctrl = matchUI.getGameView() != null
+                && matchUI.getCurrentPlayer() != null
+                ? matchUI.getGameView().getGame().getPlayer(matchUI.getCurrentPlayer()).getController()
+                : null;
+        final boolean disableAutoMana = ctrl != null && ctrl.isFullControl(
+                forge.game.player.PlayerController.FullControlFlag.DisableAutomaticManaPayment);
+        view.getButton(DockButtonId.DISABLE_AUTO_MANA_PAY).setActive(disableAutoMana);
         final VDock.DockButton targeting = view.getButton(DockButtonId.TARGETING);
         targeting.setDisplayState(arcs == ArcState.OFF ? RAISED : PRESSED);
         final FSkinProp arcIcon = switch (arcs) {

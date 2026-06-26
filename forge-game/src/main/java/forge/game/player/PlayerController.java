@@ -65,6 +65,7 @@ public abstract class PlayerController {
         ChooseCostReductionOrderAndVariableAmount,
         ChooseManaPoolShard, // select shard with special properties //TODO: UI option to enable this one
         NoPaymentFromManaAbility,
+        DisableAutomaticManaPayment,
         NoFreeCombatCostHandling,
         AllowPaymentStartWithMissingResources,
         LayerTimestampOrder // for StaticEffect$, tokens later etc.
