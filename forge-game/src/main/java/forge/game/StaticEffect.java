@@ -190,7 +190,7 @@ public class StaticEffect {
         for (final Player p : affectedPlayers) {
             if (layers.contains(StaticAbilityLayer.RULES)) {
                 p.setUnlimitedHandSize(false);
-                p.setMaxHandSize(p.getStartingHandSize());
+                p.setMaxHandSize(p.getGame().getRules().hasAppliedVariant(GameType.BattleBox) ? 7 : p.getStartingHandSize());
 
                 p.removeMaxLandPlays(getTimestamp());
                 p.removeMaxLandPlaysInfinite(getTimestamp());

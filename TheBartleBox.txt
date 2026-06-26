@@ -65,10 +65,10 @@
 1 Plaguecrafter
 1 Rotting Regisaur
 1 Vampire Nighthawk
+1 Bane of the Living
 1 Ravenous Chupacabra
 1 Shriekmaw
 1 Massacre Wurm
-1 Gurmag Angler
 1 Archon of Cruelty
 1 Dark Ritual
 1 Tragic Slip
@@ -115,10 +115,10 @@
 1 Tarmogoyf
 1 Werewolf Pack Leader
 1 Eternal Witness
-1 Reclamation Sage
 1 Beast Whisperer
 1 Halana, Kessig Ranger
 1 Lhurgoyf
+1 Ripjaw Raptor
 1 Thrun, the Last Troll
 1 Vengevine
 1 Acidic Slime
@@ -166,9 +166,9 @@
 1 Jodah's Codex
 1 Mindslaver
 1 Faithful Mending
-1 Senate Guildmage
 1 Staggering Insight
-1 Absorb
+1 Elite Guardmage
+1 Ojutai's Command
 1 Supreme Verdict
 1 Dream Trawler
 1 Baleful Strix
@@ -178,9 +178,9 @@
 1 Hostage Taker
 1 Dragonlord Silumgar
 1 Dreadbore
-1 Rix Maadi Guildmage
 1 Terminate
 1 Bedevil
+1 Kolaghan's Command
 1 Agonizing Demise
 1 Chainer, Nightmare Adept
 1 Kird Ape
@@ -201,15 +201,15 @@
 1 Unburial Rites
 1 Merciless Eviction
 1 Ashen Rider
-1 Nivix Guildmage
+1 Izzet Charm
 1 Electrolyze
 1 Crackling Drake
 1 Fire/Ice
 1 Prophetic Bolt
 1 Niv-Mizzet, the Firemind
 1 Deathrite Shaman
-1 Elves of Deep Shadow
 1 Abrupt Decay
+1 Gloomshrieker
 1 Putrefy
 1 Poison-Tip Archer
 1 Hogaak, Arisen Necropolis
