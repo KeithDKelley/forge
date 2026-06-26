@@ -1,28 +1,28 @@
 1 Giver of Runes
 1 Isamaru, Hound of Konda
+1 Adanto Vanguard
 1 Cathar Commando
 1 Kor Skyfisher
 1 White Knight
 1 Banisher Priest
 1 Mentor of the Meek
-1 Glorious Protector
 1 Restoration Angel
 1 Karmic Guide
 1 Serra Angel
 1 Solitude
+1 Exalted Angel
 1 Sun Titan
 1 Elesh Norn, Grand Cenobite
 1 Avacyn, Angel of Hope
-1 Ephemerate
 1 Mana Tithe
 1 Swords to Plowshares
 1 Disenchant
 1 Rebuke
-1 Council's Judgment
 1 Wrath of God
 1 Cleansing Nova
 1 Austere Command
 1 Terminus
+1 Spear of Heliod
 1 Pacifism
 1 Banishing Light
 1 Oblivion Ring
@@ -59,6 +59,7 @@
 1 Mire Triton
 1 Nullpriest of Oblivion
 1 Hypnotic Specter
+1 Midnight Reaper
 1 Murderous Rider
 1 Phyrexian Rager
 1 Plaguecrafter
@@ -69,7 +70,6 @@
 1 Massacre Wurm
 1 Gurmag Angler
 1 Archon of Cruelty
-1 Griselbrand
 1 Dark Ritual
 1 Tragic Slip
 1 Doom Blade
@@ -85,8 +85,8 @@
 1 Goblin Guide
 1 Grim Lavamancer
 1 Legion Loyalist
-1 Monastery Swiftspear
-1 Abbot of Keral Keep
+1 Rabbit Battery
+1 Zurgo Bellstriker
 1 Ball Lightning
 1 Bonecrusher Giant
 1 Magus of the Moon
@@ -111,9 +111,9 @@
 1 Tribal Flames
 1 Blasphemous Act
 1 Birds of Paradise
-1 Cankerbloom
-1 Lotus Cobra
+1 Kraul Harpooner
 1 Tarmogoyf
+1 Werewolf Pack Leader
 1 Eternal Witness
 1 Reclamation Sage
 1 Beast Whisperer
@@ -137,7 +137,7 @@
 1 Regrowth
 1 Harmonize
 1 Rancor
-1 Living Terrain
+1 Lure
 1 Bomat Courier
 1 Gingerbrute
 1 Haywire Mite
@@ -153,17 +153,17 @@
 1 Chrome Mox
 1 Basilisk Collar
 1 Bonesplitter
-1 Pithing Needle
 1 Skullclamp
+1 Springleaf Drum
 1 Swashbuckler's Whip
-1 Isochron Scepter
+1 Blackblade Reforged
 1 Lightning Greaves
 1 Smuggler's Copter
 1 Loxodon Warhammer
-1 Phyrexian Altar
 1 Staff of Domination
 1 Umbral Mantle
 1 Nevinyrral's Disk
+1 Jodah's Codex
 1 Mindslaver
 1 Faithful Mending
 1 Senate Guildmage
