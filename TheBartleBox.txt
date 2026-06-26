@@ -1,4 +1,4 @@
-```````````````````````````````````1 Giver of Runes
+1 Giver of Runes
 1 Isamaru, Hound of Konda
 1 Cathar Commando
 1 Kor Skyfisher
@@ -257,4 +257,4 @@
 1 Tasigur, the Golden Fang
 1 Chromanticore
 1 Progenitus
-1 The Ur-Dragon```````````````````````````````````
+1 The Ur-Dragon

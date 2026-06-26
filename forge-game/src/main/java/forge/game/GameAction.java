@@ -1867,7 +1867,7 @@ public class GameAction {
             game.getTracker().flush();
 
             c.setMoveToCommandZone(false);
-            if (c.getOwner().getController().confirmAction(c.getCurrentState().getFirstSpellAbilityWithFallback(),
+            if (c.getOwner().getController().isAI() || c.getOwner().getController().confirmAction(c.getCurrentState().getFirstSpellAbilityWithFallback(),
                     PlayerActionConfirmMode.ChangeZoneToAltDestination,
                     c.getDisplayName() + ": If a Battle Box land would move to another zone from the battlefield, its owner may put it into the command zone.",
                     null)) {
