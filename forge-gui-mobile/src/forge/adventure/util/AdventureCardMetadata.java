@@ -103,6 +103,10 @@ public final class AdventureCardMetadata {
         if ("tag".equals(normalizedKey) || "tags".equals(normalizedKey) || "otag".equals(normalizedKey)) {
             return "tags";
         }
+        // Price fields — resolved from card_prices_usd.jsonl (or equivalent) records
+        if ("usd".equals(normalizedKey) || "eur".equals(normalizedKey) || "tix".equals(normalizedKey)) {
+            return normalizedKey;
+        }
         if (normalizedKey.startsWith("sf.")) {
             return "sf." + normalizedKey.substring(3);
         }
@@ -132,31 +136,8 @@ public final class AdventureCardMetadata {
                     return PaperCard::isRebalanced;
                 }
                 return null;
-            case "usd":
-                // Maps Scryfall USD price to adventure gold: $1 USD ≈ 200 gold
-                // (commons default to 50g ≈ $0.25, uncommons to 150g ≈ $0.75)
-                return parseUsdPredicate(operator, value.trim());
             default:
                 return null;
-        }
-    }
-
-    private static Predicate<PaperCard> parseUsdPredicate(String operator, String value) {
-        try {
-            double usdLimit = Double.parseDouble(value);
-            int goldLimit = (int) (usdLimit * 200);
-            switch (operator) {
-                case "<":  return pc -> CardUtil.getCardPrice(pc) <  goldLimit;
-                case "<=": return pc -> CardUtil.getCardPrice(pc) <= goldLimit;
-                case ">":  return pc -> CardUtil.getCardPrice(pc) >  goldLimit;
-                case ">=": return pc -> CardUtil.getCardPrice(pc) >= goldLimit;
-                case "=":
-                case ":":  return pc -> CardUtil.getCardPrice(pc) == goldLimit;
-                default:   return null;
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid USD price in query: " + value);
-            return null;
         }
     }
 

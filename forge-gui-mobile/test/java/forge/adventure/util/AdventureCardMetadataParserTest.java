@@ -88,6 +88,21 @@ public class AdventureCardMetadataParserTest {
     }
 
     @Test
+    public void metadataPath_usdKey_routesToUsd() {
+        assertEquals(AdventureCardMetadata.metadataPath("usd", "<=", "0.25"), "usd");
+    }
+
+    @Test
+    public void metadataPath_eurKey_routesToEur() {
+        assertEquals(AdventureCardMetadata.metadataPath("eur", "<=", "0.50"), "eur");
+    }
+
+    @Test
+    public void metadataPath_tixKey_routesToTix() {
+        assertEquals(AdventureCardMetadata.metadataPath("tix", "<=", "1.00"), "tix");
+    }
+
+    @Test
     public void metadataPath_typeToken_returnsNull() {
         // t:creature must NOT be intercepted by the adventure metadata parser
         assertNull(AdventureCardMetadata.metadataPath("t", ":", "creature"));
@@ -162,21 +177,30 @@ public class AdventureCardMetadataParserTest {
     }
 
     @Test
-    public void parseToken_usdLessOrEqual_recognized() {
-        // Critical: usd must be handled at the adventure layer so it does not
-        // fall to regularTokens and zero out the card pool.
+    public void parseToken_usdLessOrEqual_routesThroughMetadata() {
+        // usd now routes through the metadata record system (metadataPath → "usd").
+        // parseToken returns a metadata predicate that checks each card's loaded
+        // price records. With no records loaded (config=null in this test), the
+        // predicate is non-null but will match nothing at evaluation time.
+        // The key invariant: it must NOT return null (which would fall to regularTokens
+        // and do a literal text search, zeroing the pool).
         Predicate<PaperCard> pred = AdventureCardMetadata.parseToken("usd", "<=", "0.25");
-        assertNotNull(pred, "usd<=0.25 must produce a non-null predicate (adventure gold price filter)");
+        assertNotNull(pred, "usd<=0.25 must produce a non-null metadata predicate");
     }
 
     @Test
-    public void parseToken_usdGreater_recognized() {
+    public void parseToken_usdGreater_routesThroughMetadata() {
         assertNotNull(AdventureCardMetadata.parseToken("usd", ">", "1.00"));
     }
 
     @Test
-    public void parseToken_usdInvalidValue_returnsNull() {
-        assertNull(AdventureCardMetadata.parseToken("usd", "<=", "not-a-number"));
+    public void parseToken_eurKey_routesThroughMetadata() {
+        assertNotNull(AdventureCardMetadata.parseToken("eur", "<=", "0.50"));
+    }
+
+    @Test
+    public void parseToken_tixKey_routesThroughMetadata() {
+        assertNotNull(AdventureCardMetadata.parseToken("tix", "<=", "1.00"));
     }
 
     @Test

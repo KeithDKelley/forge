@@ -23,3 +23,15 @@ id:c -t:land t:creature -o:"sunburst" -t:"eldrazi" -o:"red" -o:"green" -o:"blue"
 Goal is that through their initial gameplay / decisions in small storybeats and the like the player gets to shape their initial deck.
 
 After the player gets through "The Multiversal Clockwork", they end up in the initial village / area. Thought is to then have five diverse areas (associated with each individual color), and then have a final boss (Two-Headed Hellkite). Thought is also to give bosses "scheme" style decks so they have effects and the like going on each turn.
+
+
+
+In the initial area after multiversal clockwork thinking I might do enemy color pairs, just to make things more interesting.
+
+Black - Emphasis on "building up one's self"
+
+WB - Vampire / lifesteal & lifegain
+UR - Elementals, weirds, "spiritualism, but the unnatural kind"
+BG - Focus on fungi / rebirth and renewal
+RW - 
+GU

@@ -118,7 +118,8 @@
   "cardPrintingPreference": "original",
   "enableRewardQueries": true,
   "rewardQueryMetadata": [
-    "data/card_metadata.jsonl"
+    "data/card_metadata.jsonl",
+    "data/card_prices_usd.jsonl"
   ],
   "rewardQueryGlobalFilter": "id:c -t:planeswalker -t:conspiracy -t:scheme -t:plane -o:commander -(o:\"as long as you control a\" and o:planeswalker) -name:A- -border:silver -st:alchemy -otag:\"draft matters\" date<2026-06-21",
   "rewardQueryPresets": {

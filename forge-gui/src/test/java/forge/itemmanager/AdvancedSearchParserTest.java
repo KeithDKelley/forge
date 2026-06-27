@@ -188,18 +188,17 @@ public class AdvancedSearchParserTest {
     }
 
     @Test
-    public void paperToken_usd_handledOrNull() {
-        // Before AdventureCardMetadata is registered as a PaperCardTokenParser:
-        // returns null → falls to regularTokens → literal text search → zeros pool.
-        // After registration: returns a gold-price predicate (non-null).
-        // This test documents the baseline before registration.
+    public void paperToken_usd_handledByAdventureMetadata() {
+        // usd routes through AdventureCardMetadata's metadataPath → "usd".
+        // parseAdvancedPaperCardToken returns non-null ONLY if AdventureCardMetadata
+        // is registered as a PaperCardTokenParser via configure().
+        // Without registration (this isolated test), it returns null and falls to
+        // regularTokens → literal text search → zeros pool.
         // In the full game, AdventureCardMetadata.configure() registers the handler,
-        // so the non-null path is exercised at runtime — but not in this isolated test.
+        // so runtime always gets non-null. The mobile-module tests cover the non-null path.
         Predicate<PaperCard> result = AdvancedSearchParser.parseAdvancedPaperCardToken("usd<=0.25");
-        // No assertion on null vs non-null: depends on whether a handler is registered.
-        // This is intentionally a documentation test. Check console output.
-        System.out.println("[test] usd<=0.25 paper token predicate: "
-                + (result == null ? "NULL (will zero pool if no handler registered)" : "handled: " + result));
+        System.out.println("[test] usd<=0.25 (no adventure handler registered): "
+                + (result == null ? "NULL — expected without AdventureCardMetadata.configure()" : "non-null: " + result));
     }
 
     @Test
