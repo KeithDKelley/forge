@@ -246,6 +246,17 @@ public class CardUtil {
             }
         }
 
+        private static String buildEffectiveQuery(String rewardQuery) {
+            if (!Config.instance().getConfigData().enableRewardQueries) return null;
+            String globalFilter = Config.instance().getConfigData().rewardQueryGlobalFilter;
+            boolean hasGlobal = globalFilter != null && !globalFilter.trim().isEmpty();
+            boolean hasLocal  = rewardQuery != null && !rewardQuery.trim().isEmpty();
+            if (!hasGlobal && !hasLocal) return null;
+            if (hasGlobal && !hasLocal)  return globalFilter.trim();
+            if (!hasGlobal)              return rewardQuery.trim();
+            return "(" + globalFilter.trim() + ") (" + rewardQuery.trim() + ")";
+        }
+
         public CardPredicate(final RewardData type, final boolean wantEqual) {
             this.matchAllSubTypes = type.matchAllSubTypes;
             this.matchAllColors = type.matchAllColors;
@@ -253,8 +264,9 @@ public class CardUtil {
             for (int i = 0; type.manaCosts != null && i < type.manaCosts.length; i++)
                 manaCosts.add(type.manaCosts[i]);
             text = getPattern(type);
-            if (Config.instance().getConfigData().enableRewardQueries && type.query != null && !type.query.trim().isEmpty()) {
-                query = SFilterUtil.buildTextFilter(type.query, false, true, true, true, true);
+            String effectiveQuery = buildEffectiveQuery(type.query);
+            if (effectiveQuery != null) {
+                query = SFilterUtil.buildTextFilter(effectiveQuery, false, true, true, true, true);
             } else {
                 query = null;
             }
@@ -333,6 +345,10 @@ public class CardUtil {
                         // Get a random variant, preserving edition when specified
                         PaperCard finalCandidate = CardUtil.getCardByNameAndEdition(candidate.getCardName(), candidate.getEdition());
                         result.add(finalCandidate);
+                    } else if (parseCardArtPreference(Config.instance().getConfigData().cardPrintingPreference) != null) {
+                        // Re-resolve to the adventure's preferred printing
+                        PaperCard finalCandidate = CardUtil.getCardByName(candidate.getCardName());
+                        result.add(finalCandidate != null ? finalCandidate : candidate);
                     } else {
                         result.add(candidate);
                     }
@@ -842,6 +858,33 @@ public class CardUtil {
         return FModel.getMagicDb().getCommonCards().getCard(replacementCard);
     }
 
+    private static CardDb.CardArtPreference parseCardArtPreference(String pref) {
+        if (pref == null) return null;
+        switch (pref.toLowerCase(Locale.ROOT).trim()) {
+            case "original":      return CardDb.CardArtPreference.ORIGINAL_ART_ALL_EDITIONS;
+            case "original-core": return CardDb.CardArtPreference.ORIGINAL_ART_CORE_EXPANSIONS_REPRINT_ONLY;
+            case "latest":        return CardDb.CardArtPreference.LATEST_ART_ALL_EDITIONS;
+            case "latest-core":   return CardDb.CardArtPreference.LATEST_ART_CORE_EXPANSIONS_REPRINT_ONLY;
+            default:              return null;
+        }
+    }
+
+    private static Predicate<PaperCard> buildEditionFilter(ConfigData configData) {
+        Predicate<PaperCard> filter = null;
+        if (configData.allowedEditions != null && configData.allowedEditions.length > 0) {
+            Set<String> allowed = new HashSet<>(Arrays.asList(configData.allowedEditions));
+            filter = card -> allowed.contains(card.getEdition());
+        } else if (configData.restrictedEditions != null && configData.restrictedEditions.length > 0) {
+            Set<String> restricted = new HashSet<>(Arrays.asList(configData.restrictedEditions));
+            filter = card -> !restricted.contains(card.getEdition());
+        }
+        if (Config.instance().getSettingData().excludeAlchemyVariants) {
+            Predicate<PaperCard> noAlchemy = PaperCardPredicates.IS_REBALANCED.negate();
+            filter = filter != null ? filter.and(noAlchemy) : noAlchemy;
+        }
+        return filter;
+    }
+
     public static PaperCard getCardByName(String cardName) {
         List<PaperCard> validCards;
         ConfigData configData = Config.instance().getConfigData();
@@ -859,6 +902,12 @@ public class CardUtil {
             }
             validCards = FModel.getMagicDb().getCommonCards().getAllCardsNoAlt(cardName, combined_predicate);
         } else {
+            CardDb.CardArtPreference artPref = parseCardArtPreference(configData.cardPrintingPreference);
+            if (artPref != null) {
+                PaperCard card = FModel.getMagicDb().getCommonCards()
+                        .getCardFromEditions(cardName, artPref, 0, buildEditionFilter(configData));
+                return card != null ? card : getReplacement(cardName, "Wastes");
+            }
             validCards = List.of(FModel.getMagicDb().getCommonCards().getUniqueByNameNoAlt(cardName));
             // Filter to allowed editions to prevent showing printings from wrong sets.
             if (configData.allowedEditions != null && configData.allowedEditions.length > 0) {

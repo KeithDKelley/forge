@@ -32,8 +32,11 @@ public class ConfigData {
     public String[] restrictedEvents;
     public String[] allowedEvents;
     public String[] allowedJumpstart;
+    public String cardPrintingPreference;
     public boolean enableRewardQueries = false;
     public String[] rewardQueryMetadata;
+    public String rewardQueryGlobalFilter;
+    public ObjectMap<String, RewardData> rewardQueryPresets;
     public String defaultBasicLandSet = "JMP";
     public boolean enableGeneticAI = true;
     public String chaosDeckFormat;

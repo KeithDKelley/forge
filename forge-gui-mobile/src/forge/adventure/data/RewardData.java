@@ -52,6 +52,7 @@ public class RewardData implements Serializable {
     public String colorType;
     public String cardText;
     public String query;
+    public String preset;
     public boolean matchAllSubTypes;
     public boolean matchAllColors;
     public RewardData[] cardUnion;
@@ -87,6 +88,7 @@ public class RewardData implements Serializable {
         colorType        = rewardData.colorType;
         cardText         = rewardData.cardText;
         query            = rewardData.query;
+        preset           = rewardData.preset;
         matchAllSubTypes = rewardData.matchAllSubTypes;
         matchAllColors   = rewardData.matchAllColors;
         cardUnion        = rewardData.cardUnion == null ? null : rewardData.cardUnion.clone();
@@ -154,9 +156,10 @@ public class RewardData implements Serializable {
     }
 
     private static boolean hasEnabledQuery(RewardData data) {
-        return Config.instance().getConfigData().enableRewardQueries
-                && data.query != null
-                && !data.query.trim().isEmpty();
+        if (!Config.instance().getConfigData().enableRewardQueries) return false;
+        if (data.query != null && !data.query.trim().isEmpty()) return true;
+        String globalFilter = Config.instance().getConfigData().rewardQueryGlobalFilter;
+        return globalFilter != null && !globalFilter.trim().isEmpty();
     }
 
     public Array<Reward> generate(boolean isForEnemy, boolean useSeedlessRandom) {
@@ -172,6 +175,46 @@ public class RewardData implements Serializable {
     }
 
     public Array<Reward> generate(boolean isForEnemy, Iterable<PaperCard> cards, boolean useSeedlessRandom, boolean isNoSell) {
+        // Resolve named preset: merge preset fields with any explicit overrides on this instance
+        if (preset != null && !preset.isEmpty()) {
+            ConfigData configData = Config.instance().getConfigData();
+            if (configData.rewardQueryPresets != null && configData.rewardQueryPresets.containsKey(preset)) {
+                RewardData merged = new RewardData(configData.rewardQueryPresets.get(preset));
+                merged.preset = null;
+                if (type != null && !type.isEmpty())           merged.type = type;
+                if (probability != 0)                          merged.probability = probability;
+                if (count != 0)                                merged.count = count;
+                if (addMaxCount != 0)                          merged.addMaxCount = addMaxCount;
+                if (cardName != null)                          merged.cardName = cardName;
+                if (itemName != null)                          merged.itemName = itemName;
+                if (itemNames != null)                         merged.itemNames = itemNames;
+                if (editions != null)                          merged.editions = editions;
+                if (colors != null)                            merged.colors = colors;
+                if (startDate != 0)                            merged.startDate = startDate;
+                if (endDate != 0)                              merged.endDate = endDate;
+                if (rarity != null)                            merged.rarity = rarity;
+                if (subTypes != null)                          merged.subTypes = subTypes;
+                if (cardTypes != null)                         merged.cardTypes = cardTypes;
+                if (superTypes != null)                        merged.superTypes = superTypes;
+                if (manaCosts != null)                         merged.manaCosts = manaCosts;
+                if (keyWords != null)                          merged.keyWords = keyWords;
+                if (colorType != null)                         merged.colorType = colorType;
+                if (cardText != null)                          merged.cardText = cardText;
+                if (query != null && !query.isEmpty())         merged.query = query;
+                if (matchAllSubTypes)                          merged.matchAllSubTypes = true;
+                if (matchAllColors)                            merged.matchAllColors = true;
+                if (cardUnion != null)                         merged.cardUnion = cardUnion;
+                if (deckNeeds != null)                         merged.deckNeeds = deckNeeds;
+                if (rotation != null)                          merged.rotation = rotation;
+                if (cardPack != null)                          merged.cardPack = cardPack;
+                if (sourceDeck != null)                        merged.sourceDeck = sourceDeck;
+                if (minDate != null)                           merged.minDate = minDate;
+                return merged.generate(isForEnemy, cards, useSeedlessRandom, isNoSell);
+            } else {
+                System.err.println("Unknown reward preset: " + preset);
+            }
+        }
+
         boolean allCardVariants = Config.instance().getSettingData().useAllCardVariants;
         Random rewardRandom = useSeedlessRandom ? new Random() : WorldSave.getCurrentSave().getWorld().getRandom();
         //Keep using same generation method for shop rewards, but fully randomize loot drops by not using the instance pre-seeded by the map

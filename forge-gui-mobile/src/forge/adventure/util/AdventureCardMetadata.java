@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import forge.adventure.data.ConfigData;
+import forge.adventure.data.RewardData;
 import forge.card.CardEdition;
 import forge.item.PaperCard;
 import forge.itemmanager.AdvancedSearchParser;
@@ -47,9 +48,24 @@ public final class AdventureCardMetadata {
         }
     }
 
+    private static Predicate<PaperCard> resolvePreset(String name) {
+        if (configData.rewardQueryPresets == null) return null;
+        RewardData preset = configData.rewardQueryPresets.get(name);
+        if (preset == null) {
+            System.err.println("Unknown query preset: " + name);
+            return null;
+        }
+        RewardData copy = new RewardData(preset);
+        copy.preset = null;
+        return new CardUtil.CardPredicate(copy, true);
+    }
+
     public static Predicate<PaperCard> parseToken(String key, String operator, String value) {
         if (configData == null || !configData.enableRewardQueries) {
             return null;
+        }
+        if ("preset".equals(key.toLowerCase(Locale.ROOT)) && (":".equals(operator) || "=".equals(operator))) {
+            return resolvePreset(value.trim());
         }
         String path = metadataPath(key, operator, value);
         String op = operator;
@@ -88,11 +104,6 @@ public final class AdventureCardMetadata {
         }
         if (normalized.startsWith("meta.")) {
             return normalized.substring(5);
-        }
-        if (!isMetadataNamespace(normalized) && (operator.equals(":") || operator.equals("=") || operator.equals("!")
-                || operator.equals("!=") || operator.equals("<") || operator.equals("<=")
-                || operator.equals(">") || operator.equals(">="))) {
-            return normalized;
         }
         return null;
     }
