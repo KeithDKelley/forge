@@ -24,6 +24,32 @@ Goal is that through their initial gameplay / decisions in small storybeats and 
 
 After the player gets through "The Multiversal Clockwork", they end up in the initial village / area. Thought is to then have five diverse areas (associated with each individual color), and then have a final boss (Two-Headed Hellkite). Thought is also to give bosses "scheme" style decks so they have effects and the like going on each turn.
 
+```
+You find yourself standing before an ominous crystal. Your whole body aches as you come to in the damp air, the scene of rust washing over you.
+
+Nothing else moves, except a single other person lying on the floor. Looking at them, they are so dessicated and covered in heavy grey robes to the point you can't make out if they were a human or elf, let alone a man or woman. Their eyes meet yours for a moment.
+
+Other: "A world... between worlds?..."
+
+Other: "Are you a wizard as well?"
+
+Other: "You're luckier than I.. although... my spells... some seem to have survived. You can have them. I have no strength left to deny them to you anyway."
+
+The figure offers up a satchel, holding it aloft for a moment before their body unnaturally relaxes and lies still.
+
+Player Choices:
+    - (White) Try to find a pulse, inspect their body to see if you can find any way to heal them.
+        - Follow up is they have no visible wounds, player takes the satchel
+    - (Green) Breathe deeply, accept the satchel and this part of the cycle of life.
+```
+
+Another choice is red vs black, seeing a memory fragment depicting a scene of a bunch of people around a table, are they scheming or are they rejoycing?
+
+Third would be a blue or white choice of, when faced with scribbling on the wall, psychological analysis vs 
+
+Boss fight, boss is a power plant golem, starts with five worn powerstones, player gets them each time they hit the boss, goal is to get all powerstones prior to dying.
+
+
 
 
 In the initial area after multiversal clockwork thinking I might do enemy color pairs, just to make things more interesting.
@@ -33,5 +59,17 @@ Black - Emphasis on "building up one's self"
 WB - Vampire / lifesteal & lifegain
 UR - Elementals, weirds, "spiritualism, but the unnatural kind"
 BG - Focus on fungi / rebirth and renewal
-RW - 
-GU
+RW - Clerical / holy knightly order thing "emootion of the divine"
+GU - Unnatural but biological/mutants
+
+
+GU river down the middle of the valley, terminating in a BG swamp/forest
+RW holy mountain
+RU cascading bluffs style waterfall opposite BG swam/forest
+
+
+
+
+Overall Heirarchy:
+
+Plane (data struct) - Storyplanes (in lore planes) - Region - Map - Biome

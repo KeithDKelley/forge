@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="5">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="7">
  <tileset firstgid="1" source="../../tileset/main.tsx"/>
  <layer id="1" name="Ground" width="100" height="100">
   <data encoding="csv">
@@ -343,6 +343,12 @@
 	&quot;count&quot;: 15
 }
 ]</property>
+   </properties>
+  </object>
+  <object id="6" template="../../obj/dialog.tx" x="825.333" y="525.333">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+    <property name="sprite" value="wizard"/>
    </properties>
   </object>
  </objectgroup>

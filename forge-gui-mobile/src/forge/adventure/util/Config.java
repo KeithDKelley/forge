@@ -319,8 +319,57 @@ public class Config {
         return null;
     }
 
+    private final HashMap<String, String> spriteShortNameCache = new HashMap<>();
+
+    private void findAtlasFiles(File dir, String stem, String baseAbsPath, List<String> results) {
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        for (File f : files) {
+            if (f.isDirectory()) {
+                findAtlasFiles(f, stem, baseAbsPath, results);
+            } else if (f.getName().equalsIgnoreCase(stem + ".atlas")) {
+                String absFile = f.getAbsolutePath().replace('\\', '/');
+                if (absFile.startsWith(baseAbsPath)) {
+                    results.add(absFile.substring(baseAbsPath.length()));
+                }
+            }
+        }
+    }
+
+    private String resolveSpriteName(String name) {
+        if (spriteShortNameCache.containsKey(name)) {
+            return spriteShortNameCache.get(name);
+        }
+        String stem = name.endsWith(".atlas") ? name.substring(0, name.length() - 6) : name;
+        List<String> matches = new ArrayList<>();
+        for (String base : new String[]{prefix, commonPrefix}) {
+            File spritesDir = new File(base + "sprites");
+            if (spritesDir.exists()) {
+                findAtlasFiles(spritesDir, stem, new File(base).getAbsolutePath().replace('\\', '/') + "/", matches);
+            }
+        }
+        String result;
+        if (matches.size() == 1) {
+            result = matches.get(0);
+            System.out.println("Resolved sprite name \"" + name + "\" to \"" + result + "\"");
+        } else {
+            if (matches.size() > 1) {
+                System.err.println("Ambiguous sprite name \"" + name + "\": " + matches.size() + " matches found, use a full path. Matches: " + matches);
+            }
+            result = name;
+        }
+        spriteShortNameCache.put(name, result);
+        return result;
+    }
+
     public TextureAtlas getAtlas(String spriteAtlas) {
-        String fileName = getFile(spriteAtlas).path();
+        String path = !spriteAtlas.contains("/") ? resolveSpriteName(spriteAtlas) : spriteAtlas;
+        FileHandle handle = getFile(path);
+        if (handle == null) {
+            System.err.println("Could not find sprite atlas: " + spriteAtlas);
+            return null;
+        }
+        String fileName = handle.path();
         TextureAtlas atlas = Forge.getAssets().manager().get(fileName, TextureAtlas.class, false);
         if (atlas == null) {
             Forge.getAssets().manager().load(fileName, TextureAtlas.class);
