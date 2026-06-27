@@ -384,7 +384,7 @@ public abstract class AdvancedSearchParser {
         return predicate;
     }
 
-    private static String unquote(String s) {
+    static String unquote(String s) {
         if (s != null && s.length() >= 2 && s.charAt(0) == '"' && s.charAt(s.length() - 1) == '"') {
             return s.substring(1, s.length() - 1);
         }

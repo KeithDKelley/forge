@@ -59,7 +59,7 @@ public class SFilterUtil {
         }
     }
 
-    private static List<String> tokenize(String text) {
+    static List<String> tokenize(String text) {
         List<String> tokens = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         boolean inQuotes = false;
@@ -120,7 +120,7 @@ public class SFilterUtil {
         return tokens;
     }
 
-    private static List<String> insertImplicitAndTokens(List<String> tokens) {
+    static List<String> insertImplicitAndTokens(List<String> tokens) {
         if (tokens.isEmpty()) {
             return tokens;
         }

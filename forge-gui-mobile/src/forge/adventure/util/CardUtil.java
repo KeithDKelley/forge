@@ -246,15 +246,23 @@ public class CardUtil {
             }
         }
 
-        private static String buildEffectiveQuery(String rewardQuery) {
-            if (!Config.instance().getConfigData().enableRewardQueries) return null;
-            String globalFilter = Config.instance().getConfigData().rewardQueryGlobalFilter;
+        // Package-private overload for unit testing without Config dependency.
+        static String buildEffectiveQuery(boolean enableRewardQueries, String globalFilter, String rewardQuery) {
+            if (!enableRewardQueries) return null;
             boolean hasGlobal = globalFilter != null && !globalFilter.trim().isEmpty();
             boolean hasLocal  = rewardQuery != null && !rewardQuery.trim().isEmpty();
             if (!hasGlobal && !hasLocal) return null;
             if (hasGlobal && !hasLocal)  return globalFilter.trim();
             if (!hasGlobal)              return rewardQuery.trim();
             return "(" + globalFilter.trim() + ") (" + rewardQuery.trim() + ")";
+        }
+
+        private static String buildEffectiveQuery(String rewardQuery) {
+            return buildEffectiveQuery(
+                Config.instance().getConfigData().enableRewardQueries,
+                Config.instance().getConfigData().rewardQueryGlobalFilter,
+                rewardQuery
+            );
         }
 
         public CardPredicate(final RewardData type, final boolean wantEqual) {
