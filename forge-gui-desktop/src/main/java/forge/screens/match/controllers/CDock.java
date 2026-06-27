@@ -126,11 +126,14 @@ public class CDock implements ICDoc {
         if (ctrl == null) { return; }
         final forge.game.player.PlayerController.FullControlFlag flag =
                 forge.game.player.PlayerController.FullControlFlag.DisableAutomaticManaPayment;
-        if (ctrl.isFullControl(flag)) {
-            ctrl.getFullControl().remove(flag);
-        } else {
+        final boolean newVal = !ctrl.isFullControl(flag);
+        if (newVal) {
             ctrl.getFullControl().add(flag);
+        } else {
+            ctrl.getFullControl().remove(flag);
         }
+        FModel.getPreferences().setPref(FPref.UI_DISABLE_AUTO_MANA_PAYMENT, newVal);
+        FModel.getPreferences().save();
         update();
     }
 

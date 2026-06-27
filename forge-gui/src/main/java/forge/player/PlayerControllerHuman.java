@@ -128,6 +128,9 @@ public class PlayerControllerHuman extends PlayerController implements IGameCont
         super(game0, p, lp);
         inputProxy = new InputProxy(this);
         inputQueue = new InputQueue(game0.getView(), inputProxy);
+        if (FModel.getPreferences().getPrefBoolean(FPref.UI_DISABLE_AUTO_MANA_PAYMENT)) {
+            getFullControl().add(FullControlFlag.DisableAutomaticManaPayment);
+        }
     }
 
     public PlayerControllerHuman(final Player p, final LobbyPlayer lp, final PlayerControllerHuman owner) {

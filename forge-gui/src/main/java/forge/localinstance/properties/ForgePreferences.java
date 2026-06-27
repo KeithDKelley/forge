@@ -131,6 +131,7 @@ public class ForgePreferences extends PreferencesStore<ForgePreferences.FPref> {
         YIELD_INTERRUPT_ON_TRIGGERS ("false"),
         YIELD_INTERRUPT_ON_REVEAL ("false"),
         YIELD_INTERRUPT_ON_MASS_REMOVAL ("false"),
+        UI_DISABLE_AUTO_MANA_PAYMENT ("false"),
         YIELD_AUTO_PASS_NO_ACTIONS ("false"),
         YIELD_AUTO_PASS_RESPECTS_INTERRUPTS ("false"),
         YIELD_AVAILABLE_ACTIONS_BUDGET_MS ("0"),
