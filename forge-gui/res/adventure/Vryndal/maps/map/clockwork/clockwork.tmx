@@ -327,8 +327,8 @@
    <properties>
     <property name="reward">[
 {
-	&quot;preset&quot;: &quot;starting-card-any-type&quot;,
-	&quot;query&quot;: &quot;t:creature&quot;,
+	&quot;type&quot;: &quot;card&quot;,
+	&quot;query&quot;: &quot;preset:starting-card-any-type t:creature&quot;,
 	&quot;count&quot;: 15
 }
 ]</property>
@@ -338,7 +338,8 @@
    <properties>
     <property name="reward">[
 {
-	&quot;preset&quot;: &quot;starting-card-any-type&quot;,
+	&quot;type&quot;: &quot;card&quot;,
+	&quot;query&quot;: &quot;preset:starting-card-any-type&quot;,
 	&quot;count&quot;: 15
 }
 ]</property>

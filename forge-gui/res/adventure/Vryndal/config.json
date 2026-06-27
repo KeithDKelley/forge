@@ -124,7 +124,7 @@
   "rewardQueryPresets": {
     "starting-card-any-type": {
       "type": "card",
-      "query": "id:c -o:\"sunburst\" -t:\"eldrazi\" -o:\"red\" -o:\"green\" -o:\"blue\" -o:\"white\" -o:\"black\" -t:\"phyrexian\" usd<=0.25"
+      "query": "id:c -o:sunburst -t:eldrazi -o:red -o:green -o:blue -o:white -o:black -t:phyrexian usd<=0.25"
     },
     "colorless-creature": {
       "type": "card",
