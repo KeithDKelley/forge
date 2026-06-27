@@ -95,7 +95,13 @@
     "EOS",
     "EOC",
     "CLU",
-    "MKM"
+    "MKM",
+    "PTK",
+    "DFT",
+    "DSK",
+    "LTR",
+    "LTC",
+    "TLA"
   ],
   "restrictedEvents": [
     "LEA",
@@ -114,7 +120,7 @@
   "rewardQueryMetadata": [
     "data/card_metadata.jsonl"
   ],
-  "rewardQueryGlobalFilter": "id:c",
+  "rewardQueryGlobalFilter": "id:c -t:planeswalker -t:conspiracy -t:scheme -t:plane -o:commander -(o:\"as long as you control a\" and o:planeswalker) -name:A- -border:silver -st:alchemy -otag:\"draft matters\" date<2026-06-21",
   "rewardQueryPresets": {
     "colorless-creature": {
       "type": "card",

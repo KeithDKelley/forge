@@ -10,7 +10,10 @@ import forge.item.PaperCard;
 import forge.itemmanager.AdvancedSearchParser;
 import forge.model.FModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,14 +67,19 @@ public final class AdventureCardMetadata {
         if (configData == null || !configData.enableRewardQueries) {
             return null;
         }
-        if ("preset".equals(key.toLowerCase(Locale.ROOT)) && (":".equals(operator) || "=".equals(operator))) {
+        String normalizedKey = key.toLowerCase(Locale.ROOT);
+        if ("preset".equals(normalizedKey) && (":".equals(operator) || "=".equals(operator))) {
             return resolvePreset(value.trim());
         }
-        String path = metadataPath(key, operator, value);
+        Predicate<PaperCard> propertyPred = parsePropertyToken(normalizedKey, operator, value);
+        if (propertyPred != null) {
+            return propertyPred;
+        }
+        String path = metadataPath(normalizedKey, operator, value);
         String op = operator;
         String expected = value;
 
-        if (isMetadataNamespace(key)) {
+        if (isMetadataNamespace(normalizedKey)) {
             ParsedMetadataToken parsed = parseNamespacedValue(value);
             if (parsed == null) {
                 return null;
@@ -91,26 +99,74 @@ public final class AdventureCardMetadata {
         return card -> recordsFor(card).stream().anyMatch(record -> record.matches(finalPath, finalOp, finalExpected));
     }
 
-    private static String metadataPath(String key, String operator, String value) {
-        String normalized = key.toLowerCase(Locale.ROOT);
-        if ("tag".equals(normalized) || "tags".equals(normalized)) {
+    private static String metadataPath(String normalizedKey, String operator, String value) {
+        if ("tag".equals(normalizedKey) || "tags".equals(normalizedKey) || "otag".equals(normalizedKey)) {
             return "tags";
         }
-        if (normalized.startsWith("sf.")) {
-            return "sf." + normalized.substring(3);
+        if (normalizedKey.startsWith("sf.")) {
+            return "sf." + normalizedKey.substring(3);
         }
-        if (normalized.startsWith("scryfall.")) {
-            return "sf." + normalized.substring("scryfall.".length());
+        if (normalizedKey.startsWith("scryfall.")) {
+            return "sf." + normalizedKey.substring("scryfall.".length());
         }
-        if (normalized.startsWith("meta.")) {
-            return normalized.substring(5);
+        if (normalizedKey.startsWith("meta.")) {
+            return normalizedKey.substring(5);
         }
         return null;
     }
 
-    private static boolean isMetadataNamespace(String key) {
-        String normalized = key.toLowerCase(Locale.ROOT);
-        return "sf".equals(normalized) || "scryfall".equals(normalized) || "meta".equals(normalized);
+    private static Predicate<PaperCard> parsePropertyToken(String normalizedKey, String operator, String value) {
+        switch (normalizedKey) {
+            case "date":
+                return parseDatePredicate(operator, value.trim());
+            case "border":
+                if ("silver".equals(value.trim())) {
+                    return pc -> {
+                        CardEdition ed = FModel.getMagicDb().getEditions().get(pc.getEdition());
+                        return ed != null && ed.getType() == CardEdition.Type.FUNNY;
+                    };
+                }
+                return null;
+            case "st":
+                if ("alchemy".equals(value.trim())) {
+                    return PaperCard::isRebalanced;
+                }
+                return null;
+            default:
+                return null;
+        }
+    }
+
+    private static Predicate<PaperCard> parseDatePredicate(String operator, String value) {
+        try {
+            Date targetDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).parse(value);
+            switch (operator) {
+                case "<":  return pc -> {
+                    CardEdition ed = FModel.getMagicDb().getEditions().get(pc.getEdition());
+                    return ed != null && ed.getDate().before(targetDate);
+                };
+                case "<=": return pc -> {
+                    CardEdition ed = FModel.getMagicDb().getEditions().get(pc.getEdition());
+                    return ed != null && !ed.getDate().after(targetDate);
+                };
+                case ">":  return pc -> {
+                    CardEdition ed = FModel.getMagicDb().getEditions().get(pc.getEdition());
+                    return ed != null && ed.getDate().after(targetDate);
+                };
+                case ">=": return pc -> {
+                    CardEdition ed = FModel.getMagicDb().getEditions().get(pc.getEdition());
+                    return ed != null && !ed.getDate().before(targetDate);
+                };
+                default:   return null;
+            }
+        } catch (ParseException e) {
+            System.err.println("Invalid date in query filter: " + value);
+            return null;
+        }
+    }
+
+    private static boolean isMetadataNamespace(String normalizedKey) {
+        return "sf".equals(normalizedKey) || "scryfall".equals(normalizedKey) || "meta".equals(normalizedKey);
     }
 
     private static ParsedMetadataToken parseNamespacedValue(String value) {

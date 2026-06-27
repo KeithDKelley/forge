@@ -57,7 +57,7 @@ public abstract class AdvancedSearchParser {
         }
 
         String key = token.substring(0, index).trim().toLowerCase();
-        String valueStr = token.substring(index + opUsed.length()).toLowerCase();
+        String valueStr = unquote(token.substring(index + opUsed.length()).trim()).toLowerCase();
         boolean creatureOnly = false;
 
         Predicate<CardRules> predicate = null;
@@ -264,7 +264,7 @@ public abstract class AdvancedSearchParser {
         }
 
         String key = token.substring(0, index).trim().toLowerCase();
-        String valueStr = token.substring(index + opUsed.length()).trim().toLowerCase();
+        String valueStr = unquote(token.substring(index + opUsed.length()).trim()).toLowerCase();
 
         Predicate<PaperCard> predicate = null;
         switch (key) {
@@ -382,6 +382,13 @@ public abstract class AdvancedSearchParser {
         }
 
         return predicate;
+    }
+
+    private static String unquote(String s) {
+        if (s != null && s.length() >= 2 && s.charAt(0) == '"' && s.charAt(s.length() - 1) == '"') {
+            return s.substring(1, s.length() - 1);
+        }
+        return s;
     }
 
     private static ComparableOp getComparableOp(String opUsed) {
