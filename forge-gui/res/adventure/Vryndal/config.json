@@ -129,36 +129,11 @@
     "data/card_metadata.jsonl",
     "data/card_prices_usd.jsonl"
   ],
-  "rewardQueryGlobalFilter": "id:c -t:planeswalker -t:conspiracy -t:scheme -t:plane -o:commander -(o:\"control a\" and o:planeswalker) -name:A- -border:silver -st:alchemy -otag:\"draft matters\" date<2026-06-21",
+  "rewardQueryGlobalFilter": "-t:planeswalker -t:conspiracy -t:scheme -t:plane -o:commander -(o:\"control a\" and o:planeswalker) -name:A- -border:silver -st:alchemy -otag:\"draft matters\" date<2026-06-21",
   "rewardQueryPresets": {
     "starting-card-any-type": {
       "type": "card",
       "query": "id:c -o:sunburst -t:eldrazi -o:red -o:green -o:blue -o:white -o:black -t:phyrexian usd<=0.25"
-    },
-    "colorless-creature": {
-      "type": "card",
-      "query": "t:creature"
-    },
-    "colorless-artifact": {
-      "type": "card",
-      "query": "t:artifact -t:creature"
-    },
-    "colorless-spell": {
-      "type": "card",
-      "query": "-t:land -t:creature -t:artifact"
-    },
-    "colorless-land": {
-      "type": "card",
-      "query": "t:land"
-    },
-    "colorless-any": {
-      "type": "card",
-      "query": "-t:basic"
-    },
-    "colorless-rare-creature": {
-      "type": "card",
-      "query": "t:creature",
-      "rarity": ["rare", "mythic rare"]
     }
   },
   "difficulties": [{
