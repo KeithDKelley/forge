@@ -68,6 +68,7 @@ public class DialogData implements Serializable {
         public EffectData giveBlessing;   //Give a blessing to the player.
         public String setColorIdentity;   //Change player's color identity.
         public String advanceCharacterFlag;   //Increase given quest flag by 1.
+        public QuestFlag modifyCharacterFlag; //Add (or subtract) val from a character flag; floor at 0.
         public String advanceQuestFlag;   //Increase given quest flag by 1.
         public String advanceMapFlag;     //Increase given map flag by 1.
         public EffectData setEffect;      //Set or replace current effects on current actor.
@@ -95,6 +96,12 @@ public class DialogData implements Serializable {
             battleWithActorID = other.battleWithActorID;
             giveBlessing = other.giveBlessing;
             setColorIdentity = other.setColorIdentity;
+            advanceCharacterFlag = other.advanceCharacterFlag;
+            modifyCharacterFlag = other.modifyCharacterFlag == null ? null : new QuestFlag();
+            if (other.modifyCharacterFlag != null) {
+                modifyCharacterFlag.key = other.modifyCharacterFlag.key;
+                modifyCharacterFlag.val = other.modifyCharacterFlag.val;
+            }
             advanceQuestFlag = other.advanceQuestFlag;
             advanceMapFlag = other.advanceMapFlag;
             setEffect = other.setEffect;

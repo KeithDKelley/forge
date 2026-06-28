@@ -37,6 +37,13 @@ public class ConfigData {
     public String[] rewardQueryMetadata;
     public String rewardQueryGlobalFilter;
     public ObjectMap<String, RewardData> rewardQueryPresets;
+    public ObjectMap<String, FlagLimits> characterFlagLimits;
+
+    public static class FlagLimits {
+        public int min = Integer.MIN_VALUE;
+        public int max = Integer.MAX_VALUE;
+        public String trackedBy; // if set, |actual change| is added to this flag on every modification
+    }
     public String defaultBasicLandSet = "JMP";
     public boolean enableGeneticAI = true;
     public String chaosDeckFormat;

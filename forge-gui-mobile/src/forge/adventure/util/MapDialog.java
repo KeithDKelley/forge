@@ -381,6 +381,9 @@ public class MapDialog {
             if (E.advanceCharacterFlag != null && !E.advanceCharacterFlag.isEmpty()) { //Increase a given quest flag by 1.
                 Current.player().advanceCharacterFlag(E.advanceCharacterFlag);
             }
+            if (E.modifyCharacterFlag != null && !E.modifyCharacterFlag.key.isEmpty()) { //Add or subtract from a character flag; floor at 0.
+                Current.player().modifyCharacterFlag(E.modifyCharacterFlag.key, E.modifyCharacterFlag.val);
+            }
             if (E.setQuestFlag != null && !E.setQuestFlag.key.isEmpty()) { //Set a quest to given value.
                 Current.player().setQuestFlag(E.setQuestFlag.key, E.setQuestFlag.val);
             }

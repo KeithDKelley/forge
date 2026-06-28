@@ -323,28 +323,7 @@
     <property name="spawn" value="true"/>
    </properties>
   </object>
-  <object id="2" template="../../obj/treasure.tx" x="945" y="560">
-   <properties>
-    <property name="reward">[
-{
-	&quot;type&quot;: &quot;card&quot;,
-	&quot;query&quot;: &quot;preset:starting-card-any-type t:creature&quot;,
-	&quot;count&quot;: 15
-}
-]</property>
-   </properties>
-  </object>
-  <object id="3" template="../../obj/treasure.tx" x="961" y="560">
-   <properties>
-    <property name="reward">[
-{
-	&quot;type&quot;: &quot;card&quot;,
-	&quot;query&quot;: &quot;preset:starting-card-any-type&quot;,
-	&quot;count&quot;: 15
-}
-]</property>
-   </properties>
-  </object>
+
   <object id="6" template="../../obj/dialog.tx" x="825.333" y="525.333">
    <properties>
     <property name="hidden" type="bool" value="false"/>

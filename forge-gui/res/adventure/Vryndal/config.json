@@ -114,6 +114,14 @@
     "CLB",
     "CMM"
   ],
+  "characterFlagLimits": {
+    "alignment_w": { "min": 0, "max": 100, "trackedBy": "alignment_magnitude" },
+    "alignment_u": { "min": 0, "max": 100, "trackedBy": "alignment_magnitude" },
+    "alignment_b": { "min": 0, "max": 100, "trackedBy": "alignment_magnitude" },
+    "alignment_r": { "min": 0, "max": 100, "trackedBy": "alignment_magnitude" },
+    "alignment_g": { "min": 0, "max": 100, "trackedBy": "alignment_magnitude" },
+    "alignment_magnitude": { "min": 0 }
+  },
   "usePriceListPrices": true,
   "cardPrintingPreference": "original",
   "enableRewardQueries": true,

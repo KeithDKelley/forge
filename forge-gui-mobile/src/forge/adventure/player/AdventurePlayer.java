@@ -66,7 +66,7 @@ public class AdventurePlayer implements Serializable, SaveFileContent {
     private EffectData blessing; //Blessing to apply for next battle.
     private final PlayerStatistic statistic = new PlayerStatistic();
     private final Map<String, Byte> questFlags = new HashMap<>();
-    private final Map<String, Byte> characterFlags = new HashMap<>();
+    private final Map<String, Integer> characterFlags = new HashMap<>();
     private final Map<String, Byte> tutorialFlags = new HashMap<>();
 
     private final ArrayList<ItemData> inventoryItems = new ArrayList<>();
@@ -575,10 +575,15 @@ public class AdventurePlayer implements Serializable, SaveFileContent {
         }
         if (data.containsKey("characterFlagsKey") && data.containsKey("characterFlagsValue")) {
             String[] keys = (String[]) data.readObject("characterFlagsKey");
-            Byte[] values = (Byte[]) data.readObject("characterFlagsValue");
-            assert (keys.length == values.length);
-            for (int i = 0; i < keys.length; i++) {
-                characterFlags.put(keys[i], values[i]);
+            Object rawValues = data.readObject("characterFlagsValue");
+            if (rawValues instanceof Integer[]) {
+                Integer[] values = (Integer[]) rawValues;
+                for (int i = 0; i < keys.length; i++)
+                    characterFlags.put(keys[i], values[i]);
+            } else if (rawValues instanceof Byte[]) {
+                Byte[] values = (Byte[]) rawValues;
+                for (int i = 0; i < keys.length; i++)
+                    characterFlags.put(keys[i], values[i].intValue());
             }
         }
 
@@ -849,13 +854,13 @@ public class AdventurePlayer implements Serializable, SaveFileContent {
 
         // Save character flags.
         ArrayList<String> characterFlagsKey = new ArrayList<>();
-        ArrayList<Byte> characterFlagsValue = new ArrayList<>();
-        for (Map.Entry<String, Byte> entry : characterFlags.entrySet()) {
+        ArrayList<Integer> characterFlagsValue = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : characterFlags.entrySet()) {
             characterFlagsKey.add(entry.getKey());
             characterFlagsValue.add(entry.getValue());
         }
         data.storeObject("characterFlagsKey", characterFlagsKey.toArray(new String[0]));
-        data.storeObject("characterFlagsValue", characterFlagsValue.toArray(new Byte[0]));
+        data.storeObject("characterFlagsValue", characterFlagsValue.toArray(new Integer[0]));
 
         // Save quest flags.
         ArrayList<String> questFlagsKey = new ArrayList<>();
@@ -1426,17 +1431,41 @@ public class AdventurePlayer implements Serializable, SaveFileContent {
     //Permanent character flags
     public void setCharacterFlag(String key, int value) {
         if (value != 0)
-            characterFlags.put(key, (byte) value);
+            characterFlags.put(key, value);
         else
             characterFlags.remove(key);
         AdventureQuestController.instance().updateQuestsCharacterFlag(key, value);
     }
 
     public void advanceCharacterFlag(String key) {
-        if (characterFlags.get(key) != null) {
-            characterFlags.put(key, (byte) (characterFlags.get(key) + 1));
-        } else {
-            characterFlags.put(key, (byte) 1);
+        characterFlags.merge(key, 1, Integer::sum);
+    }
+
+    public void modifyCharacterFlag(String key, int amount) {
+        int current = characterFlags.getOrDefault(key, 0);
+        ConfigData.FlagLimits limits = Config.instance().getConfigData().characterFlagLimits == null
+                ? null : Config.instance().getConfigData().characterFlagLimits.get(key);
+        int min = limits != null ? limits.min : Integer.MIN_VALUE;
+        int max = limits != null ? limits.max : Integer.MAX_VALUE;
+        long next64 = Math.max((long) min, Math.min((long) max, (long) current + amount));
+        int next = (int) next64;
+        int magnitude = (int) Math.min(Integer.MAX_VALUE, Math.abs((long) next - current));
+        if (next == 0)
+            characterFlags.remove(key);
+        else
+            characterFlags.put(key, next);
+        if (magnitude > 0 && limits != null && limits.trackedBy != null && !limits.trackedBy.isEmpty()) {
+            String trackerKey = limits.trackedBy;
+            int trackerCurrent = characterFlags.getOrDefault(trackerKey, 0);
+            ConfigData.FlagLimits trackerLimits = Config.instance().getConfigData().characterFlagLimits.get(trackerKey);
+            int trackerMin = trackerLimits != null ? trackerLimits.min : Integer.MIN_VALUE;
+            int trackerMax = trackerLimits != null ? trackerLimits.max : Integer.MAX_VALUE;
+            long trackerNext64 = Math.max((long) trackerMin, Math.min((long) trackerMax, (long) trackerCurrent + magnitude));
+            int trackerNext = (int) trackerNext64;
+            if (trackerNext == 0)
+                characterFlags.remove(trackerKey);
+            else
+                characterFlags.put(trackerKey, trackerNext);
         }
     }
 
@@ -1445,7 +1474,7 @@ public class AdventurePlayer implements Serializable, SaveFileContent {
     }
 
     public int getCharacterFlag(String key) {
-        return (int) characterFlags.getOrDefault(key, (byte) 0);
+        return characterFlags.getOrDefault(key, 0);
     }
 
     // Quest functions.

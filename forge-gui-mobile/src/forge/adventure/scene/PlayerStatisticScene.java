@@ -246,11 +246,26 @@ public class PlayerStatisticScene extends UIScene {
             colorFrame.setDrawable(new TextureRegionDrawable(getColorFrame(Current.player().getColorIdentity())));
         }
         if (blessingScroll != null) {
-            if (Current.player().getBlessing() != null) {
-                blessingScroll.setText("[BLACK]" + Current.player().getBlessing().getDescription());
-            } else {
-                blessingScroll.setText("[BLACK]No blessing.");
+            StringBuilder blessingText = new StringBuilder();
+            int aw = Current.player().getCharacterFlag("alignment_w");
+            int au = Current.player().getCharacterFlag("alignment_u");
+            int ab = Current.player().getCharacterFlag("alignment_b");
+            int ar = Current.player().getCharacterFlag("alignment_r");
+            int ag = Current.player().getCharacterFlag("alignment_g");
+            if (aw + au + ab + ar + ag > 0) {
+                blessingText.append("[GOLD]W:[BLACK]").append(aw)
+                    .append("  [CYAN]U:[BLACK]").append(au)
+                    .append("  [LIGHT_GRAY]B:[BLACK]").append(ab)
+                    .append("  [SCARLET]R:[BLACK]").append(ar)
+                    .append("  [FOREST]G:[BLACK]").append(ag)
+                    .append("\n\n");
             }
+            if (Current.player().getBlessing() != null) {
+                blessingText.append("[BLACK]").append(Current.player().getBlessing().getDescription());
+            } else {
+                blessingText.append("[BLACK]No blessing.");
+            }
+            blessingScroll.setText(blessingText.toString());
         }
 
         for (Map.Entry<String, Pair<Integer, Integer>> entry : Current.player().getStatistic().getWinLossRecord().entrySet()) {
