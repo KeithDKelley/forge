@@ -1,11 +1,13 @@
-1 Giver of Runes
+1 Dauntless Bodyguard
 1 Isamaru, Hound of Konda
+1 Mother of Runes
 1 Adanto Vanguard
 1 Cathar Commando
 1 Kor Skyfisher
 1 White Knight
 1 Banisher Priest
 1 Mentor of the Meek
+1 Mirror Entity
 1 Restoration Angel
 1 Karmic Guide
 1 Serra Angel
@@ -16,19 +18,18 @@
 1 Avacyn, Angel of Hope
 1 Mana Tithe
 1 Swords to Plowshares
-1 Disenchant
-1 Rebuke
 1 Wrath of God
 1 Cleansing Nova
 1 Austere Command
 1 Terminus
 1 Spear of Heliod
 1 Pacifism
-1 Banishing Light
+1 Fanatical Devotion
 1 Oblivion Ring
 1 Delver of Secrets
 1 Spectral Sailor
 1 Merfolk Looter
+1 Merfolk Trickster
 1 Phantasmal Image
 1 Snapcaster Mage
 1 Willbender
@@ -36,36 +37,34 @@
 1 Man-o'-War
 1 Vendilion Clique
 1 Mulldrifter
-1 Consecrated Sphinx
 1 Torrential Gearhulk
 1 Hullbreaker Horror
 1 Blue Elemental Blast
 1 Brainstorm
-1 Censor
 1 Counterspell
 1 Memory Lapse
 1 Frantic Search
 1 Cryptic Command
 1 Fact or Fiction
 1 Force of Will
-1 Gush
 1 Dig Through Time
 1 Careful Study
 1 Ponder
 1 Treasure Cruise
+1 Imprisoned in the Moon
 1 Treachery
+1 Omniscience
 1 Death's Shadow
 1 Black Knight
 1 Mire Triton
 1 Nullpriest of Oblivion
 1 Hypnotic Specter
-1 Midnight Reaper
 1 Murderous Rider
 1 Phyrexian Rager
 1 Plaguecrafter
 1 Rotting Regisaur
 1 Vampire Nighthawk
-1 Bane of the Living
+1 Erebos, God of the Dead
 1 Ravenous Chupacabra
 1 Shriekmaw
 1 Massacre Wurm
@@ -73,18 +72,19 @@
 1 Dark Ritual
 1 Tragic Slip
 1 Doom Blade
-1 Go for the Throat
 1 Dismember
-1 Murder
+1 Bone Splinters
 1 Reanimate
 1 Thoughtseize
 1 Hymn to Tourach
 1 Sign in Blood
 1 Yawgmoth's Will
+1 Living Death
+1 Bolas's Citadel
 1 Necropotence
+1 Dragon's Rage Channeler
 1 Goblin Guide
 1 Grim Lavamancer
-1 Legion Loyalist
 1 Rabbit Battery
 1 Zurgo Bellstriker
 1 Ball Lightning
@@ -92,7 +92,7 @@
 1 Magus of the Moon
 1 Avalanche Riders
 1 Flametongue Kavu
-1 Demanding Dragon
+1 Thundermaw Hellkite
 1 Zealous Conscripts
 1 Inferno Titan
 1 Shivan Dragon
@@ -100,7 +100,6 @@
 1 Lightning Bolt
 1 Red Elemental Blast
 1 Abrade
-1 Cathartic Pyre
 1 Fire Prophecy
 1 Thrill of Possibility
 1 Chaos Warp
@@ -108,8 +107,9 @@
 1 Faithless Looting
 1 Fireball
 1 Pyroclasm
-1 Tribal Flames
 1 Blasphemous Act
+1 Manabarbs
+1 Confusion in the Ranks
 1 Birds of Paradise
 1 Kraul Harpooner
 1 Tarmogoyf
@@ -166,7 +166,7 @@
 1 Jodah's Codex
 1 Mindslaver
 1 Faithful Mending
-1 Staggering Insight
+1 Reparations
 1 Elite Guardmage
 1 Ojutai's Command
 1 Supreme Verdict
@@ -178,11 +178,11 @@
 1 Hostage Taker
 1 Dragonlord Silumgar
 1 Dreadbore
-1 Terminate
+1 Anathemancer
 1 Bedevil
 1 Kolaghan's Command
-1 Agonizing Demise
 1 Chainer, Nightmare Adept
+1 Rakdos, Lord of Riots
 1 Kird Ape
 1 Gallia of the Endless Dance
 1 Gruul Guildmage
@@ -209,7 +209,7 @@
 1 Niv-Mizzet, the Firemind
 1 Deathrite Shaman
 1 Abrupt Decay
-1 Gloomshrieker
+1 Golgari Charm
 1 Putrefy
 1 Poison-Tip Archer
 1 Hogaak, Arisen Necropolis
@@ -226,8 +226,8 @@
 1 Mystic Snake
 1 Colossal Skyturtle
 1 Bant Charm
+1 Ragnar
 1 Stoic Angel
-1 Empyrial Archangel
 1 Esper Charm
 1 Void Rend
 1 Brilliant Ultimatum
